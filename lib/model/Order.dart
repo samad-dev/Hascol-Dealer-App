@@ -12,6 +12,7 @@ class Order {
   final String power;
   final String speed;
   final String vlocation;
+  final String payment_method;
 
   Order({
     required this.id,
@@ -24,6 +25,7 @@ class Order {
     required this.power,
     required this.speed,
     required this.vlocation,
+    required this.payment_method,
     required this.customer_name,
     required this.written_address,
     required this.city,
@@ -42,6 +44,7 @@ class Order {
       speed: json['city'],
       vlocation: json['store'],
       customer_name: json['customer_name'],
+      payment_method: json['payment_method'],
       written_address: json['written_address'],
       city: json['city'],
     );
