@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pandamart/Screens/Dashboard.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Home.dart';
+import '../Screens/Dash.dart';
 import '../model/drawer_item.dart';
 import '../provider/navigator_provider.dart';
 
@@ -16,9 +20,12 @@ class NavigationDrawerWidget extends State<Nav> {
   final padding = EdgeInsets.symmetric(horizontal: 20);
 
   final itemsFirst = [
-    DrawerItem(title: 'Live Tracking', icon: Icons.location_on),
+    DrawerItem(title: 'Dashboard', icon: Icons.dashboard_customize),
   ];
-
+  final itemsSecond = [
+    DrawerItem(title: 'Orders', icon: Icons.shopping_cart_checkout_rounded),
+  ];
+/*
   final itemsSecond = [
     DrawerItem(title: 'Vehicle List', icon: Icons.car_rental_outlined),
   ];
@@ -28,6 +35,7 @@ class NavigationDrawerWidget extends State<Nav> {
   final itemsFourth = [
     DrawerItem(title: 'Settings', icon: Icons.settings),
   ];
+  */
   final itemsFifth = [
     DrawerItem(title: 'Signout', icon: Icons.exit_to_app),
   ];
@@ -76,6 +84,14 @@ class NavigationDrawerWidget extends State<Nav> {
               const SizedBox(height: 3),
               Divider(color: Colors.white70),
               const SizedBox(height: 3),
+              /*buildList(
+                indexOffset: 1,
+                items: itemsSecond,
+                isCollapsed: isCollapsed,
+              ),
+              const SizedBox(height: 3),
+              Divider(color: Colors.white70),
+              const SizedBox(height: 3),
               buildList(items: itemsThird, indexOffset: 2, isCollapsed: isCollapsed),
               const SizedBox(height: 3),
               Divider(color: Colors.white70),
@@ -83,7 +99,7 @@ class NavigationDrawerWidget extends State<Nav> {
               buildList(items: itemsFourth, indexOffset: 3, isCollapsed: isCollapsed),
               const SizedBox(height: 3),
               Divider(color: Colors.white70),
-              const SizedBox(height: 3),
+              const SizedBox(height: 3),*/
               buildList(items: itemsFifth, indexOffset: 4, isCollapsed: isCollapsed),
               const SizedBox(height: 3),
               Spacer(),
@@ -128,28 +144,28 @@ class NavigationDrawerWidget extends State<Nav> {
 
     switch (index) {
 
-      // case 0:
-      //   print(index);
-      //   navigateTo(AllMapSample());
-      //   break;
-      // case 1:
-      //   navigateTo(MyListViewScreen());
-      //   break;
+      case 0:
+        print(index);
+        navigateTo(MyHomePage());
+        break;
+      case 1:
+        navigateTo(Home2());
+        break;
       // case 2:
       //   navigateTo(AlertList());
       //   break;
       // case 3:
       //   navigateTo(SettingPage());
       //   break;
-      // case 4:
-      //   print('Samad'+index.toString());
-      //   SharedPreferences prefs = await SharedPreferences.getInstance();
-      //   prefs.remove('userId');
-      //   prefs.remove('email');
-      //   prefs.remove('user_name');
-      //   prefs.remove('privilege');
-      //   navigateTo(MyLogin());
-      //   break;
+      case 4:
+        print('Samad'+index.toString());
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.remove('userId');
+        prefs.remove('email');
+        prefs.remove('user_name');
+        prefs.remove('vehi_id');
+        navigateTo(Home());
+        break;
       // case 5:
       //   navigateTo(ResourcesPage());
       //   break;
@@ -212,28 +228,30 @@ class NavigationDrawerWidget extends State<Nav> {
   Widget buildHeader(bool isCollapsed) => isCollapsed
       ? new Icon(Icons.account_circle , color: Colors.white,)
       :  Container(
-    color: Color(0xff882e35),
+    color: Color(0xffff2d55),
     height: 150,
     padding: EdgeInsets.only(top: 10.0),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 10),
+          margin: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           height: 50,
           decoration: BoxDecoration(
+            border: Border.all(color: Colors.white),
             shape: BoxShape.circle,
             image: DecorationImage(
-              image: AssetImage('assets/user.webp'),
+              image: NetworkImage('https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-Vector-PNG-File.png'),
             ),
           ),
         ),
         Text(
-          "Abdul Samad",
+          "PandaMart",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         Text(
-         "abdulsamadq67@gmail.com",
+         "Driver Application",
           style: TextStyle(color: Colors.white, fontSize: 14),
         ),
       ],

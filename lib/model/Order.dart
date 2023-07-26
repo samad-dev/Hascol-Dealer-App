@@ -50,3 +50,27 @@ class Order {
     );
   }
 }
+
+
+class User {
+  final String id;
+  final String vehicel_id;
+  final String email;
+  final String name;
+
+  User({
+    required this.id,
+    required this.vehicel_id,
+    required this.email,
+    required this.name,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      vehicel_id: json['vehi_id'],
+      email: json['email'],
+      name: json['name'],
+    );
+  }
+}

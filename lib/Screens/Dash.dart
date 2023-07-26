@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:pandamart/provider/navigator_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui' as ui;
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,6 +33,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
   List<Order> _foundUsers = [];
   late Future<List<Order>> futureAlbum;
   String number = "";
+  List<String> buttonTexts = [];
   late List<Order> items1;
   TextEditingController cancel_controller = new TextEditingController();
   TextEditingController collect_controller = new TextEditingController();
@@ -64,10 +66,13 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
   }
 
   Future<List<Order>> fetchData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var user_id = await prefs.getString("userId");
+    var vehi_id = await prefs.getString("vehi_id");
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     final response = await http.get(Uri.parse(
-        'http://151.106.17.246:8080/pandamart_close/api/mart_disparched_orders.php?accesskey=12345&user_id=3'));
+        'http://151.106.17.246:8080/pandamart_close/api/mart_disparched_orders.php?accesskey=12345&driver_id=${user_id}&vehicle_id=${vehi_id}'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       print(response.body);
@@ -76,6 +81,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
       setState(() {
         _foundUsers = items1;
         number = items1.length.toString();
+        buttonTexts = List.generate(items1.length, (index) => 'Start Delivery');
         showProgress = false;
       });
       return jsonResponse.map((data) => new Order.fromJson(data)).toList();
@@ -94,10 +100,16 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
         home: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            leading:  GestureDetector(
+              child: Icon( Icons.arrow_back_ios, color: Colors.white,  ),
+              onTap: () {
+                Navigator.pop(context);
+              } ,
+            ) ,
             backgroundColor: const Color(0xffff2d55),
-            title: const Text("Dashboard"),
+            title: const Text("Orders"),
           ),
-          drawer: Nav(),
+
           body: RefreshIndicator(
             displacement: 250,
             backgroundColor: Colors.white,
@@ -168,8 +180,8 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                                     .all(Colors
                                                                         .red)),
                                                         onPressed: () {
-                                                          openMap(-3.823216,
-                                                              -38.481700);
+                                                          openMap(_foundUsers[index].latitude,
+                                                              _foundUsers[index].longitude);
                                                           print('samad');
                                                         },
                                                         child: Text(
@@ -443,7 +455,8 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                           .pinkAccent.shade200),
                                             ),
                                             onPressed: () {
-                                              if (status == false) {
+                                              if (buttonTexts[index] ==
+                                                  'Start Delivery') {
                                                 showGeneralDialog(
                                                     barrierColor: Colors.black
                                                         .withOpacity(0.5),
@@ -491,8 +504,8 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                                         () async {
                                                                       setState(
                                                                           () {
-                                                                        status =
-                                                                            true;
+                                                                        buttonTexts[index] =
+                                                                            "End Delivery";
                                                                       });
                                                                       DateTime
                                                                           current_date =
@@ -524,8 +537,8 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                                           Navigator.pop(
                                                                               context);
                                                                           openMap(
-                                                                              -3.823216,
-                                                                              -38.481700);
+                                                                              _foundUsers[index].latitude,
+                                                                              _foundUsers[index].longitude);
                                                                           print(
                                                                               'samad');
                                                                         }
@@ -602,11 +615,13 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                               title: Column(
                                                                 children: [
                                                                   Row(
-                                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                                    mainAxisAlignment: MainAxisAlignment.center,
-
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
                                                                     children: [
-
                                                                       Text(
                                                                         "End Delivery",
                                                                         style:
@@ -626,16 +641,11 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                                           Container(
                                                                             child:
                                                                                 SfSignaturePad(
-                                                                              key:
-                                                                                  _signaturePadKey,
-                                                                              minimumStrokeWidth:
-                                                                                  1,
-                                                                              maximumStrokeWidth:
-                                                                                  3,
-                                                                              strokeColor:
-                                                                                  Colors.blue,
-                                                                              backgroundColor:
-                                                                                  Colors.grey,
+                                                                              key: _signaturePadKey,
+                                                                              minimumStrokeWidth: 1,
+                                                                              maximumStrokeWidth: 3,
+                                                                              strokeColor: Colors.blue,
+                                                                              backgroundColor: Colors.grey,
                                                                             ),
                                                                             height:
                                                                                 200,
@@ -654,45 +664,44 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                                       ),
                                                                     ],
                                                                   ),
-                                                                  if(_foundUsers[index].payment_method == 'Cash On Delivery')
-                                                                      Row(
-                                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                                        mainAxisAlignment: MainAxisAlignment.center,
-
-                                                                        children: [
-
-                                                                          Column(
-                                                                            children: [
-                                                                              Row(
-                                                                                children: [
-                                                                                  Text(
-                                                                                    "Cash To Be Collected",
-                                                                                    style:
-                                                                                    TextStyle(
-                                                                                      fontWeight:
-                                                                                      FontWeight.w800,
-                                                                                      fontSize:
-                                                                                      16,
-                                                                                    ),
+                                                                  if (_foundUsers[
+                                                                              index]
+                                                                          .payment_method ==
+                                                                      'Cash On Delivery')
+                                                                    Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Column(
+                                                                          children: [
+                                                                            Row(
+                                                                              children: [
+                                                                                Text(
+                                                                                  "Cash To Be Collected",
+                                                                                  style: TextStyle(
+                                                                                    fontWeight: FontWeight.w800,
+                                                                                    fontSize: 16,
                                                                                   ),
-                                                                                ],
-                                                                              ),
-                                                                              Row(
-                                                                                children: [
-                                                                                  Text(
-                                                                                    "Rs ${_foundUsers[index].order_amount}",
-                                                                                    style:
-                                                                                    TextStyle(
-                                                                                      fontWeight:
-                                                                                      FontWeight.w800,
-                                                                                      fontSize:
-                                                                                      16,
-                                                                                    ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                            Row(
+                                                                              children: [
+                                                                                Text(
+                                                                                  "Rs ${_foundUsers[index].order_amount}",
+                                                                                  style: TextStyle(
+                                                                                    fontWeight: FontWeight.w800,
+                                                                                    fontSize: 16,
                                                                                   ),
-                                                                                ],
-                                                                              ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
 
-                                                                              /*Row(
+                                                                            /*Row(
                                                                                 children: [
                                                                                   TextField(
                                                                                     controller: cancel_controller,
@@ -706,12 +715,10 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                                                   ),
                                                                                 ],
                                                                               ),*/
-                                                                            ],
-                                                                          ),
-                                                                        ],
-                                                                      )
-
-
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    )
                                                                 ],
                                                               ),
                                                               actionsAlignment:
@@ -739,171 +746,184 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                                                 .red)),
                                                                     onPressed:
                                                                         () async {
-                                                                      setState(
-                                                                          () {
-                                                                        status =
-                                                                            true;
-                                                                      });
-                                                                      DateTime
-                                                                          current_date =
-                                                                          DateTime
-                                                                              .now();
-                                                                      var request = http.Request(
-                                                                          'GET',
-                                                                          Uri.parse(
-                                                                              'http://151.106.17.246:8080/pandamart_close/api/trip_close_by_driver.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}'));
-                                                                      ui.Image
-                                                                          image =
-                                                                          await _signaturePadKey
-                                                                              .currentState!
-                                                                              .toImage();
-                                                                      ByteData?
-                                                                          byteData =
-                                                                          await (image.toByteData(
-                                                                              format: ui.ImageByteFormat.png));
-                                                                      if (byteData !=
-                                                                          null) {
-                                                                        final result = await ImageGallerySaver.saveImage(byteData
-                                                                            .buffer
-                                                                            .asUint8List());
-                                                                        print(
-                                                                            result);
-                                                                      }
-
-                                                                      http.StreamedResponse
-                                                                          response =
-                                                                          await request
-                                                                              .send();
-
-                                                                      if (response
-                                                                              .statusCode ==
-                                                                          200) {
-                                                                        var res2 = await response
-                                                                            .stream
-                                                                            .bytesToString();
-                                                                        if (res2 ==
-                                                                            'successfully !') {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                          if(_foundUsers[index].payment_method == 'Cash On Delivery')
-                                                                          showGeneralDialog(
-                                                                              barrierColor: Colors.black
-                                                                                  .withOpacity(0.5),
-                                                                              transitionBuilder: (context,
-                                                                                  a1, a2, widget) {
-                                                                                return Transform.scale(
-                                                                                  scale: a1.value,
-                                                                                  child: Opacity(
-                                                                                      opacity: a1.value,
-                                                                                      child: AlertDialog(
-                                                                                        title: Column(
-                                                                                          children: [
-                                                                                            Row(
-                                                                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                              mainAxisAlignment: MainAxisAlignment.center,
-
-                                                                                              children: [
-
-                                                                                                Text(
-                                                                                                  "Enter Collected Amount",
-                                                                                                  style:
-                                                                                                  TextStyle(
-                                                                                                    fontWeight:
-                                                                                                    FontWeight.w800,
-                                                                                                    fontSize:
-                                                                                                    16,
-                                                                                                  ),
+                                                                      if (_foundUsers[index]
+                                                                              .payment_method ==
+                                                                          'Cash On Delivery') {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                        showGeneralDialog(
+                                                                            barrierColor: Colors.black.withOpacity(
+                                                                                0.5),
+                                                                            transitionBuilder: (context,
+                                                                                a1,
+                                                                                a2,
+                                                                                widget) {
+                                                                              return Transform.scale(
+                                                                                scale: a1.value,
+                                                                                child: Opacity(
+                                                                                    opacity: a1.value,
+                                                                                    child: AlertDialog(
+                                                                                      title: Column(
+                                                                                        children: [
+                                                                                          Row(
+                                                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                                                            children: [
+                                                                                              Text(
+                                                                                                "Enter Collected Amount",
+                                                                                                style: TextStyle(
+                                                                                                  fontWeight: FontWeight.w800,
+                                                                                                  fontSize: 16,
                                                                                                 ),
-                                                                                              ],
-                                                                                            ),
-                                                                                            Row(
-                                                                                              children: [
-                                                                                                Column(
-                                                                                                  children: [
-                                                                                                    Container(
-                                                                                                      child:
-                                                                                                      TextFormField(
-                                                                                                        keyboardType: TextInputType.number,
-                                                                                                        controller: collect_controller,),
-                                                                                                      height:
-                                                                                                      50,
-                                                                                                      width:
-                                                                                                      232,
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Column(
+                                                                                                children: [
+                                                                                                  Container(
+                                                                                                    child: TextFormField(
+                                                                                                      keyboardType: TextInputType.number,
+                                                                                                      controller: collect_controller,
                                                                                                     ),
-
-                                                                                                  ],
-                                                                                                ),
-                                                                                              ],
-                                                                                            ),
-
-
-
-                                                                                          ],
-                                                                                        ),
-                                                                                        actionsAlignment:
-                                                                                        MainAxisAlignment
-                                                                                            .spaceAround,
-
-                                                                                        actions: <Widget>[
-                                                                                          TextButton(
-                                                                                              style: ButtonStyle(
-                                                                                                  backgroundColor:
-                                                                                                  MaterialStateProperty.all(Colors
-                                                                                                      .grey)),
-                                                                                              onPressed: () =>
-                                                                                                  Navigator.of(context)
-                                                                                                      .pop(false),
-                                                                                              child: Text(
-                                                                                                "Submit",
-                                                                                                style:
-                                                                                                TextStyle(
-                                                                                                  color: Colors
-                                                                                                      .white,
-                                                                                                  fontFamily:
-                                                                                                  'Nunito',
-                                                                                                  fontWeight:
-                                                                                                  FontWeight.w600,
-                                                                                                  fontSize:
-                                                                                                  MediaQuery.of(context).size.width *
-                                                                                                      0.03,
-                                                                                                ),
-                                                                                              )),
+                                                                                                    height: 50,
+                                                                                                    width: 232,
+                                                                                                  ),
+                                                                                                ],
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
                                                                                         ],
-                                                                                      )),
-                                                                                );
-                                                                              },
-                                                                              transitionDuration:
-                                                                              const Duration(
-                                                                                  milliseconds: 200),
-                                                                              barrierDismissible: false,
-                                                                              barrierLabel: '',
-                                                                              context: context,
-                                                                              pageBuilder: (context,
-                                                                                  animation1,
-                                                                                  animation2) {
-                                                                                return const Text(
-                                                                                    'PAGE BUILDER');
-                                                                              });
-                                                                          final snackBar =
-                                                                              SnackBar(
-                                                                            content:
-                                                                                Text('Delivery Completed Successfully'),
-                                                                            duration:
-                                                                                Duration(seconds: 5),
-                                                                            action:
-                                                                                SnackBarAction(
-                                                                              label: 'Undo',
-                                                                              onPressed: () {
-                                                                                // Some code to undo the change.
-                                                                              },
-                                                                            ),
-                                                                          );
-                                                                          ScaffoldMessenger.of(context)
-                                                                              .showSnackBar(snackBar);
-                                                                        }
+                                                                                      ),
+                                                                                      actionsAlignment: MainAxisAlignment.spaceAround,
+                                                                                      actions: <Widget>[
+                                                                                        TextButton(
+                                                                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pinkAccent)),
+                                                                                            onPressed: () async {
+                                                                                              DateTime current_date = DateTime.now();
+                                                                                              print('http://151.106.17.246:8080/pandamart_close/api/trip_close_by_driver_amount.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}&amount=${collect_controller.text.toString()}');
+                                                                                              var request = http.Request('GET', Uri.parse('http://151.106.17.246:8080/pandamart_close/api/trip_close_by_driver_amount.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}&amount=${collect_controller.text.toString()}'));
+                                                                                              /*ui.Image
+                                                                                                  image =
+                                                                                                      await _signaturePadKey
+                                                                                                      .currentState!
+                                                                                                      .toImage();
+                                                                                                  ByteData?
+                                                                                                  byteData =
+                                                                                                  await (image.toByteData(
+                                                                                                      format: ui.ImageByteFormat.png));
+                                                                                                  if (byteData !=
+                                                                                                      null) {
+                                                                                                    final result = await ImageGallerySaver.saveImage(byteData
+                                                                                                        .buffer
+                                                                                                        .asUint8List());
+                                                                                                    print(
+                                                                                                        result);
+                                                                                                  }*/
+
+                                                                                              http.StreamedResponse response = await request.send();
+
+                                                                                              if (response.statusCode == 200) {
+                                                                                                var res2 = await response.stream.bytesToString();
+                                                                                                if (res2 == 'successfully !') {
+                                                                                                  Navigator.pop(context);
+                                                                                                }
+                                                                                              } else {
+                                                                                                print(response.reasonPhrase);
+                                                                                              }
+                                                                                            },
+                                                                                            child: Text(
+                                                                                              "Submit",
+                                                                                              style: TextStyle(
+                                                                                                color: Colors.white,
+                                                                                                fontFamily: 'Nunito',
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                                fontSize: MediaQuery.of(context).size.width * 0.03,
+                                                                                              ),
+                                                                                            )),
+                                                                                      ],
+                                                                                    )),
+                                                                              );
+                                                                            },
+                                                                            transitionDuration: const Duration(
+                                                                                milliseconds:
+                                                                                    200),
+                                                                            barrierDismissible:
+                                                                                false,
+                                                                            barrierLabel:
+                                                                                '',
+                                                                            context:
+                                                                                context,
+                                                                            pageBuilder: (context,
+                                                                                animation1,
+                                                                                animation2) {
+                                                                              return const Text('PAGE BUILDER');
+                                                                            });
+                                                                        final snackBar =
+                                                                            SnackBar(
+                                                                          content:
+                                                                              Text('Delivery Completed Successfully'),
+                                                                          duration:
+                                                                              Duration(seconds: 5),
+                                                                          action:
+                                                                              SnackBarAction(
+                                                                            label:
+                                                                                'Undo',
+                                                                            onPressed:
+                                                                                () {
+                                                                              // Some code to undo the change.
+                                                                            },
+                                                                          ),
+                                                                        );
+                                                                        ScaffoldMessenger.of(context)
+                                                                            .showSnackBar(snackBar);
                                                                       } else {
-                                                                        print(response
-                                                                            .reasonPhrase);
+                                                                        setState(
+                                                                            () {
+                                                                          status =
+                                                                              true;
+                                                                        });
+                                                                        DateTime
+                                                                            current_date =
+                                                                            DateTime.now();
+                                                                        print(
+                                                                            'http://151.106.17.246:8080/pandamart_close/api/trip_close_by_driver.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}');
+                                                                        var request = http.Request(
+                                                                            'GET',
+                                                                            Uri.parse('http://151.106.17.246:8080/pandamart_close/api/trip_close_by_driver.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}'));
+                                                                        ui.Image
+                                                                            image =
+                                                                            await _signaturePadKey.currentState!.toImage();
+                                                                        ByteData?
+                                                                            byteData =
+                                                                            await (image.toByteData(format: ui.ImageByteFormat.png));
+                                                                        if (byteData !=
+                                                                            null) {
+                                                                          final result = await ImageGallerySaver.saveImage(byteData
+                                                                              .buffer
+                                                                              .asUint8List());
+                                                                          print(
+                                                                              result);
+                                                                        }
+
+                                                                        http.StreamedResponse
+                                                                            response =
+                                                                            await request.send();
+
+                                                                        if (response.statusCode ==
+                                                                            200) {
+                                                                          var res2 = await response
+                                                                              .stream
+                                                                              .bytesToString();
+                                                                          if (res2 ==
+                                                                              'successfully !') {
+                                                                            Navigator.pop(context);
+                                                                          }
+                                                                        } else {
+                                                                          print(
+                                                                              response.reasonPhrase);
+                                                                        }
                                                                       }
                                                                     },
                                                                     child: Text(
@@ -962,9 +982,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                     });
                                               }
                                             },
-                                            child: Text(status == true
-                                                ? 'End Delivery'
-                                                : 'Start Delivery'),
+                                            child: Text(buttonTexts[index]),
                                           ),
                                           SizedBox(
                                             width: 5,
@@ -1028,84 +1046,95 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                                         .pop(
                                                                             false);
                                                                     showGeneralDialog(
-                                                                        barrierColor: Colors.black
-                                                                            .withOpacity(0.5),
+                                                                        barrierColor: Colors.black.withOpacity(
+                                                                            0.5),
                                                                         transitionBuilder: (context,
-                                                                            a1, a2, widget) {
-                                                                          return Transform.scale(
-                                                                            scale: a1.value,
+                                                                            a1,
+                                                                            a2,
+                                                                            widget) {
+                                                                          return Transform
+                                                                              .scale(
+                                                                            scale:
+                                                                                a1.value,
                                                                             child: Opacity(
                                                                                 opacity: a1.value,
                                                                                 child: AlertDialog(
                                                                                   title: Text(
                                                                                     "Add Note",
                                                                                     style: TextStyle(
-                                                                                      fontWeight:
-                                                                                      FontWeight
-                                                                                          .w400,
+                                                                                      fontWeight: FontWeight.w400,
                                                                                       fontSize: 12,
                                                                                     ),
                                                                                   ),
-                                                                                  actionsAlignment:
-                                                                                  MainAxisAlignment
-                                                                                      .spaceAround,
+                                                                                  actionsAlignment: MainAxisAlignment.spaceAround,
                                                                                   content: TextField(
                                                                                     controller: cancel_controller,
                                                                                     style: TextStyle(
-                                                                                      fontWeight:
-                                                                                      FontWeight
-                                                                                          .w600,
-                                                                                      fontSize: MediaQuery.of(
-                                                                                          context)
-                                                                                          .size
-                                                                                          .width *
-                                                                                          0.03,
+                                                                                      fontWeight: FontWeight.w600,
+                                                                                      fontSize: MediaQuery.of(context).size.width * 0.03,
                                                                                     ),
                                                                                   ),
                                                                                   actions: <Widget>[
                                                                                     TextButton(
-                                                                                        style: ButtonStyle(
-                                                                                            backgroundColor:
-                                                                                            MaterialStateProperty.all(Colors
-                                                                                                .red)),
-                                                                                        onPressed:
-                                                                                            () {
-                                                                                          Navigator.of(
-                                                                                              context)
-                                                                                              .pop(
-                                                                                              false);
+                                                                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+                                                                                        onPressed: () async {
+                                                                                          DateTime current_date = DateTime.now();
+                                                                                          print('http://151.106.17.246:8080/pandamart_close/api/cancel_order.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}&description=${cancel_controller.text.toString()}');
+                                                                                          var request = http.Request('GET', Uri.parse('http://151.106.17.246:8080/pandamart_close/api/cancel_order.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}&description=${cancel_controller.text.toString()}'));
+                                                                                          // ui.Image
+                                                                                          // image =
+                                                                                          //     await _signaturePadKey
+                                                                                          //     .currentState!
+                                                                                          //     .toImage();
+                                                                                          // ByteData?
+                                                                                          // byteData =
+                                                                                          // await (image.toByteData(
+                                                                                          //     format: ui.ImageByteFormat.png));
+                                                                                          // if (byteData !=
+                                                                                          //     null) {
+                                                                                          //   final result = await ImageGallerySaver.saveImage(byteData
+                                                                                          //       .buffer
+                                                                                          //       .asUint8List());
+                                                                                          //   print(
+                                                                                          //       result);
+                                                                                          // }
 
+                                                                                          http.StreamedResponse response = await request.send();
+
+                                                                                          if (response.statusCode == 200) {
+                                                                                            var res2 = await response.stream.bytesToString();
+                                                                                            if (res2 == 'successfully !') {
+                                                                                              Navigator.of(context).pop(false);
+                                                                                            }
+                                                                                          } else {
+                                                                                            print(response.reasonPhrase);
+                                                                                          }
                                                                                         },
                                                                                         child: Text(
                                                                                           "Submit",
-                                                                                          style:
-                                                                                          TextStyle(
-                                                                                            color: Colors
-                                                                                                .white,
-                                                                                            fontFamily:
-                                                                                            'Nunito',
-                                                                                            fontWeight:
-                                                                                            FontWeight
-                                                                                                .w600,
-                                                                                            fontSize: MediaQuery.of(context)
-                                                                                                .size
-                                                                                                .width *
-                                                                                                0.03,
+                                                                                          style: TextStyle(
+                                                                                            color: Colors.white,
+                                                                                            fontFamily: 'Nunito',
+                                                                                            fontWeight: FontWeight.w600,
+                                                                                            fontSize: MediaQuery.of(context).size.width * 0.03,
                                                                                           ),
                                                                                         )),
-
                                                                                   ],
                                                                                 )),
                                                                           );
                                                                         },
-                                                                        transitionDuration:
-                                                                        const Duration(
-                                                                            milliseconds: 200),
-                                                                        barrierDismissible: false,
-                                                                        barrierLabel: '',
-                                                                        context: context,
+                                                                        transitionDuration: const Duration(
+                                                                            milliseconds:
+                                                                                200),
+                                                                        barrierDismissible:
+                                                                            false,
+                                                                        barrierLabel:
+                                                                            '',
+                                                                        context:
+                                                                            context,
                                                                         pageBuilder: (context,
-                                                                            animation1, animation2) {
+                                                                            animation1,
+                                                                            animation2) {
                                                                           return const Text(
                                                                               'PAGE BUILDER');
                                                                         });
@@ -1323,7 +1352,6 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
               ],
             ),
           ),
-
         ),
       ),
     );
@@ -1332,11 +1360,11 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
   static Future<void> openMap(double latitude, double longitude) async {
     String googleUrl =
         'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
-    if (await canLaunch(googleUrl)) {
+    // if (await canLaunch(googleUrl)) {
       await launch(googleUrl);
-    } else {
-      throw 'Could not open the map.';
-    }
+    // } else {
+    //   throw 'Could not open the map.';
+    // }
   }
 
   Future<bool> _handleLocationPermission() async {

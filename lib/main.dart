@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pandamart/Screens/Dash.dart';
+import 'package:pandamart/Screens/Dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Home.dart';
 
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       title: 'Foodpanda',
       home: SplashScreen(),
     );
@@ -29,12 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Home()),
-      );
-    });
+    getValue();
+
   }
 
   @override
@@ -45,6 +43,38 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Image.asset('Assets/foodpanda_logo.png'),
       ),
     );
+  }
+  void getValue() async {
+    var prefs = await SharedPreferences.getInstance();
+    var getName = (prefs.getString("userId") ?? "");
+    // nameValue = getName != null ? getName : "No Value Saved ";
+    if (getName == "") {
+      Timer(Duration(seconds: 3), () {
+
+        Navigator.pushReplacement<void, void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) =>
+                Home(),
+          ),
+        );
+      });
+    } else {
+      Timer(Duration(seconds: 3), () {
+
+        Navigator.pushReplacement<void, void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) =>
+                MyHomePage(),
+          ),
+        );
+      });
+
+    }
+    setState(() {
+
+    });
   }
 }
 
