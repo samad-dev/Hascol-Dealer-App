@@ -146,18 +146,18 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
           body:Container(
             color:Color(0xffE5E5E5),
             child:StaggeredGridView.count(
-              crossAxisCount: 4,
+              crossAxisCount: 6,
               crossAxisSpacing: 12.0,
               mainAxisSpacing: 12.0,
               staggeredTiles: [
-                StaggeredTile.extent(4,110.0),
+                StaggeredTile.extent(6,110.0),
                 StaggeredTile.extent(2, 120.0),
                 StaggeredTile.extent(2, 120.0),
-                StaggeredTile.extent(4, 110.0),
                 StaggeredTile.extent(2, 120.0),
-                StaggeredTile.extent(2, 120.0),
-                StaggeredTile.extent(4, 260.0),
-                StaggeredTile.extent(2, 120.0),
+                StaggeredTile.extent(6, 120.0),
+                StaggeredTile.extent(3, 120.0),
+                StaggeredTile.extent(3, 120.0),
+                StaggeredTile.extent(6, 260.0),
                 StaggeredTile.extent(2, 120.0),
                 StaggeredTile.extent(2, 120.0),
               ],
@@ -181,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text('Total Orders',
-                                    style: TextStyle(color: Color(0xff2b3993))),
+                                     style: TextStyle(color: Color(0xff2b3993),fontSize: 16,fontWeight: FontWeight.w700)),
                                 Text(total_orders.toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -204,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                 ),
                 _buildTile(
                   Padding(
-                    padding: const EdgeInsets.all(24.0),
+                    padding: const EdgeInsets.all(14.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -213,8 +213,32 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text('Completed Orders',
-                                  style: TextStyle(color: Color(0xff2b3993))),
+                              Text('Completed\n Orders',
+                                  style: TextStyle(color: Color(0xff2b3993),fontSize: 12,fontWeight: FontWeight.w700)),
+                              Text(complete_orders.toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 34.0))
+                            ],
+                          ),
+
+                        ]),
+                  ),
+                ),
+                _buildTile(
+                  Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('InProcess\n Orders',
+                                  style: TextStyle(color: Color(0xff2b3993),fontSize: 12,fontWeight: FontWeight.w700)),
                               Text(ontrip_orders.toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -228,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                 ),
                 _buildTile(
                   Padding(
-                    padding: const EdgeInsets.all(24.0),
+                    padding: const EdgeInsets.all(14.0),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -237,8 +261,8 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              const Text('Pending Orders',
-                                  style: TextStyle(color: Color(0xff2b3993))),
+                              const Text('Pending\n Orders',
+                                  style: TextStyle(color: Color(0xff2b3993),fontSize: 12,fontWeight: FontWeight.w700)),
                               Text(pending_orders.toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -262,7 +286,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const Text('Total Complaints',
-                                  style: TextStyle(color: Color(0xff2b3993))),
+                                   style: TextStyle(color: Color(0xff2b3993),fontSize: 16,fontWeight: FontWeight.w700)),
                               Text(credit_card.toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -286,7 +310,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const Text('Open Complaints',
-                                  style: TextStyle(color: Color(0xff2b3993))),
+                                   style: TextStyle(color: Color(0xff2b3993),fontSize: 14,fontWeight: FontWeight.w700)),
                               Text(cash_orders.toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -311,7 +335,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const Text('Closed Complaints',
-                                  style: TextStyle(color: Color(0xff2b3993))),
+                                   style: TextStyle(color: Color(0xff2b3993),fontSize: 14,fontWeight: FontWeight.w700)),
                               Text(recieved_amount.toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -419,7 +443,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
           total_orders = int.parse(jsons[0]["order_detail"].toString());
           online_payment = int.parse(jsons[0]["complaints"].toString());
           cash_orders = int.parse(jsons[0]["complaints_pending"].toString());
-          // ontrip_orders = int.parse(jsons[0]["complaints_pending"].toString());
+          ontrip_orders = int.parse(jsons[0]["order_ontrip"].toString());
           credit_card = int.parse(jsons[0]["complaints"].toString());
           complete_orders = int.parse(jsons[0]["order_complete"].toString());
           // complete_orders = int.parse(jsons[0]["order_complete"].toString());

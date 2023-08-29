@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -18,6 +19,7 @@ import '../model/Order.dart';
 import '../model/Vehicle.dart';
 import '../styleguide/text_style.dart';
 import '../widget/navigation_drawer_widget.dart';
+import 'Playb.dart';
 import 'order.dart';
 
 class Home2 extends StatefulWidget {
@@ -141,7 +143,23 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                     horizontal: 12, vertical: 5),
 
                                 child: GestureDetector(
-
+                                  onTap: (){
+                                    print(_foundUsers[index].start_time);
+                                    if(_foundUsers[index].start_time != "")
+                                      {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Playb(vehicle_id: _foundUsers[index].vehicle,start_time: _foundUsers[index].start_time,),
+                                          ),
+                                        );
+                                        print("Trip Started");
+                                      }
+                                    else
+                                      {
+                                       Fluttertoast.showToast(msg: 'Trip Not Started Yet',backgroundColor: Color(0xff032291),textColor: Colors.white);
+                                      }
+                                  },
                                   child: Container(
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
@@ -176,7 +194,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: <Widget>[
                                                   Text(
-                                                    "Quantity:",
+                                                    "PMG Quantity:",
                                                     style:
                                                         whiteSubHeadingTextStyle
                                                             .copyWith(
@@ -191,7 +209,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                     width: 4,
                                                   ),
                                                   Text(
-                                                    _foundUsers[index].quantity,
+                                                    _foundUsers[index].PMG_qty+" Litres",
                                                     style:
                                                         whiteSubHeadingTextStyle
                                                             .copyWith(
@@ -206,19 +224,73 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                               ),
                                               Row(
                                                 mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  Text(
-                                                    "Order Time:",
-                                                    style:
-                                                        whiteSubHeadingTextStyle
-                                                            .copyWith(
-                                                                color:
-                                                                    Color(0xff2b3993),
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700),
+                                                children: [Text(
+                                                  "HSD Quantity:",
+                                                  style:
+                                                  whiteSubHeadingTextStyle
+                                                      .copyWith(
+                                                      color:
+                                                      Color(0xff2b3993),
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w700),
+                                                ),
+                                                  SizedBox(
+                                                    width: 4,
                                                   ),
+                                                  Text(
+                                                    _foundUsers[index].HSD_qty+" Litres",
+                                                    style:
+                                                    whiteSubHeadingTextStyle
+                                                        .copyWith(
+                                                        color:
+                                                        Color(0xff2b3993),
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w700),
+                                                  ),],
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    "HOBC Quantity:",
+                                                    style:
+                                                    whiteSubHeadingTextStyle
+                                                        .copyWith(
+                                                        color:
+                                                        Color(0xff2b3993),
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w700),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  Text(
+                                                    _foundUsers[index].HOBC_qty+" Litres",
+                                                    style:
+                                                    whiteSubHeadingTextStyle
+                                                        .copyWith(
+                                                        color:
+                                                        Color(0xff2b3993),
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w700),
+                                                  ),],
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Icon(
+                                                          Icons.watch_later_outlined,
+                                                          color:Color(0xff2b3993),
+                                                          size: 13,
+                                                        ),
                                                   SizedBox(
                                                     width: 4,
                                                   ),
@@ -242,66 +314,67 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                               ),
                                             ],
                                           ),
+
                                           // leading: ClipOval(
-                                          //   child: Icon(Icons.near_me,
-                                          //     color: true ? Colors.green : Colors.red
-                                          //     ,size: 30,),
+                                          //   child: FaIcon(FontAwesomeIcons.h,
+                                          //     color:  Colors.orange
+                                          //     ,size: 40,),
                                           // ),
 
                                         ),
-                                        Row(
-                                          children: <Widget>[
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Icon(
-                                              Icons.location_on,
-                                              color:Color(0xff2b3993),
-                                              size: 13,
-                                            ),
-                                            SizedBox(
-                                              width: 4,
-                                            ),
-                                            Flexible(
-                                              child: Text(
-                                                  _foundUsers[index].delivery_based,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: 10.0,
-                                                    color:Color(0xff2b3993),
-                                                    fontWeight: FontWeight.w800,
-                                                  )),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Icon(
-                                              Icons.payment,
-                                              color:Color(0xff2b3993),
-                                              size: 13,
-                                            ),
-                                            SizedBox(
-                                              width: 4,
-                                            ),
-                                            Flexible(
-                                              child: Text(
-                                                  "Rs. "+_foundUsers[index].amount,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: 10.0,
-                                                    color: Color(0xff2b3993),
-                                                    fontWeight: FontWeight.w800,
-                                                  )),
-                                            ),
-                                          ],
-                                        ),
+                                        // Row(
+                                        //   children: <Widget>[
+                                        //     SizedBox(
+                                        //       width: 20,
+                                        //     ),
+                                        //     Icon(
+                                        //       Icons.location_on,
+                                        //       color:Color(0xff2b3993),
+                                        //       size: 13,
+                                        //     ),
+                                        //     SizedBox(
+                                        //       width: 4,
+                                        //     ),
+                                        //     Flexible(
+                                        //       child: Text(
+                                        //           _foundUsers[index].delivery_based,
+                                        //           overflow: TextOverflow.ellipsis,
+                                        //           style: TextStyle(
+                                        //             fontSize: 10.0,
+                                        //             color:Color(0xff2b3993),
+                                        //             fontWeight: FontWeight.w800,
+                                        //           )),
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        // SizedBox(
+                                        //   height: 5,
+                                        // ),
+                                        // Row(
+                                        //   children: <Widget>[
+                                        //     SizedBox(
+                                        //       width: 20,
+                                        //     ),
+                                        //     Icon(
+                                        //       Icons.payment,
+                                        //       color:Color(0xff2b3993),
+                                        //       size: 13,
+                                        //     ),
+                                        //     SizedBox(
+                                        //       width: 4,
+                                        //     ),
+                                        //     Flexible(
+                                        //       child: Text(
+                                        //           "Rs. "+_foundUsers[index].amount,
+                                        //           overflow: TextOverflow.ellipsis,
+                                        //           style: TextStyle(
+                                        //             fontSize: 10.0,
+                                        //             color: Color(0xff2b3993),
+                                        //             fontWeight: FontWeight.w800,
+                                        //           )),
+                                        //     ),
+                                        //   ],
+                                        // ),
                                         SizedBox(
                                           height: 5,
                                         ),
