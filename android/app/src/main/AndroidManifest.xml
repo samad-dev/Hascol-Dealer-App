@@ -1,12 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.p2p.panda.pandamart">
+    package="com.hascol.dealer">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
    <application
         android:requestLegacyExternalStorage="true"
-        android:label="pandamart"
+        android:label="Hascol"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyBNyJWb04pByaU1CTmimoWNl3b86VV6qZ8"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

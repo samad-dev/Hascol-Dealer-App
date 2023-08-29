@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ import '../model/Order.dart';
 import '../model/Vehicle.dart';
 import '../styleguide/text_style.dart';
 import '../widget/navigation_drawer_widget.dart';
+import 'order.dart';
 
 class Home2 extends StatefulWidget {
   const Home2({Key? key}) : super(key: key);
@@ -72,7 +74,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     final response = await http.get(Uri.parse(
-        'http://151.106.17.246:8080/pandamart_close/api/mart_disparched_orders.php?accesskey=12345&driver_id=${user_id}&vehicle_id=${vehi_id}'));
+        'http://151.106.17.246:8080/hascol/api/get_all_orders.php?accesskey=12345&user_id=${user_id}'));
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
       print(response.body);
@@ -80,8 +82,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
 
       setState(() {
         _foundUsers = items1;
-        number = items1.length.toString();
-        buttonTexts = List.generate(items1.length, (index) => 'Start Delivery');
+
         showProgress = false;
       });
       return jsonResponse.map((data) => new Order.fromJson(data)).toList();
@@ -106,14 +107,14 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                 Navigator.pop(context);
               } ,
             ) ,
-            backgroundColor: const Color(0xffff2d55),
+            backgroundColor: const Color(0xff2b3993),
             title: const Text("Orders"),
           ),
 
           body: RefreshIndicator(
             displacement: 250,
-            backgroundColor: Colors.white,
-            color: Color(0xffff2d55),
+            backgroundColor: Color(0xff2b3993),
+            color: Color(0xff2b3993),
             strokeWidth: 3,
             triggerMode: RefreshIndicatorTriggerMode.onEdge,
             onRefresh: () async {
@@ -131,1207 +132,194 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                 .length, // set the number of items in the list
                             itemBuilder: (BuildContext context, int index) {
                               return Card(
-                                color: const Color(0xffff2d55),
-                                elevation: 2,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
+                                color: const Color(0xffffffff),
+                                elevation: 10,
+
+                                shape:
+                                  Border(left: BorderSide(color: Colors.red, width: 3)),
                                 margin: const EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 5),
+
                                 child: GestureDetector(
-                                  onTap: () {
-                                    showGeneralDialog(
-                                        barrierColor:
-                                            Colors.black.withOpacity(0.5),
-                                        transitionBuilder:
-                                            (context, a1, a2, widget) {
-                                          return Transform.scale(
-                                            scale: a1.value,
-                                            child: Opacity(
-                                                opacity: a1.value,
-                                                child: AlertDialog(
-                                                  title: Text(
-                                                    "Start Delivery",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                  actionsAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  content: Text(
-                                                    "Are you sure you want to Start Delivery?",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.03,
-                                                    ),
-                                                  ),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(Colors
-                                                                        .red)),
-                                                        onPressed: () {
-                                                          openMap(_foundUsers[index].latitude,
-                                                              _foundUsers[index].longitude);
-                                                          print('samad');
-                                                        },
-                                                        child: Text(
-                                                          "Yes",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontFamily:
-                                                                'Nunito',
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.03,
-                                                          ),
-                                                        )),
-                                                    TextButton(
-                                                        style: ButtonStyle(
-                                                            backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all(Colors
-                                                                        .grey)),
-                                                        onPressed: () =>
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(false),
-                                                        child: Text(
-                                                          "No",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontFamily:
-                                                                'Nunito',
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.03,
-                                                          ),
-                                                        )),
-                                                  ],
-                                                )),
-                                          );
-                                        },
-                                        transitionDuration:
-                                            const Duration(milliseconds: 200),
-                                        barrierDismissible: false,
-                                        barrierLabel: '',
-                                        context: context,
-                                        pageBuilder:
-                                            (context, animation1, animation2) {
-                                          return const Text('PAGE BUILDER');
-                                        });
-                                  },
-                                  child: Column(
-                                    children: [
-                                      ListTile(
-                                        title: Text(
-                                          "Customer Name: " +
-                                              _foundUsers[index].customer_name,
-                                          style: TextStyle(
-                                            fontSize: 15.0,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
+
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color(0xffffffff),
+                                          Color(0xffbdbbbb),
+                                          Color(0xffffffff),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                          title: Text(
+                                            "Depot: " +
+                                                _foundUsers[index].depot,
+                                            style: TextStyle(
+                                              fontSize: 15.0,
+                                              color: Color(0xff2b3993),
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
-                                        ),
-                                        subtitle: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                Text(
-                                                  "Payment Method:",
-                                                  style:
-                                                      whiteSubHeadingTextStyle
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                ),
-                                                SizedBox(
-                                                  width: 4,
-                                                ),
-                                                Text(
-                                                  _foundUsers[index].power,
-                                                  style:
-                                                      whiteSubHeadingTextStyle
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                Text(
-                                                  "Order Time:",
-                                                  style:
-                                                      whiteSubHeadingTextStyle
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                ),
-                                                SizedBox(
-                                                  width: 4,
-                                                ),
-                                                Text(
-                                                  new DateFormat(
-                                                          'yyyy-MM-dd hh:mm a')
-                                                      .format(_foundUsers[index]
-                                                          .time)
-                                                      .toString(),
-                                                  style:
-                                                      whiteSubHeadingTextStyle
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        // leading: ClipOval(
-                                        //   child: Icon(Icons.near_me,
-                                        //     color: true ? Colors.green : Colors.red
-                                        //     ,size: 30,),
-                                        // ),
-                                        trailing: SizedBox(
-                                          width: 55,
-                                          child: Column(
+                                          subtitle: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: <Widget>[
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        Icon(
-                                                          Icons.payment,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          "Rs.${_foundUsers[index].order_amount}",
-                                                          style: whiteSubHeadingTextStyle
-                                                              .copyWith(
-                                                                  color: Color(
-                                                                      0xffffffff),
-                                                                  fontSize: 12),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Text(
+                                                    "Quantity:",
+                                                    style:
+                                                        whiteSubHeadingTextStyle
+                                                            .copyWith(
+                                                                color:
+                                                                    Color(0xff2b3993),
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  Text(
+                                                    _foundUsers[index].quantity,
+                                                    style:
+                                                        whiteSubHeadingTextStyle
+                                                            .copyWith(
+                                                                color:
+                                                                    Color(0xff2b3993),
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Text(
+                                                    "Order Time:",
+                                                    style:
+                                                        whiteSubHeadingTextStyle
+                                                            .copyWith(
+                                                                color:
+                                                                    Color(0xff2b3993),
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  Text(
+                                                    new DateFormat(
+                                                            'yyyy-MM-dd hh:mm a')
+                                                        .format(_foundUsers[index]
+                                                            .time)
+                                                        .toString(),
+                                                    style:
+                                                        whiteSubHeadingTextStyle
+                                                            .copyWith(
+                                                                color:
+                                                                    Color(0xff2b3993),
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
+                                          // leading: ClipOval(
+                                          //   child: Icon(Icons.near_me,
+                                          //     color: true ? Colors.green : Colors.red
+                                          //     ,size: 30,),
+                                          // ),
+
                                         ),
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Icon(
-                                            Icons.location_on,
-                                            color: Color(0xffffffff),
-                                            size: 13,
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          ),
-                                          Flexible(
-                                            child: Text(
-                                                _foundUsers[index].vlocation,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: 10.0,
-                                                  color: Color(0xffffffff),
-                                                  fontWeight: FontWeight.w800,
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Icon(
-                                            Icons.visibility,
-                                            color: Colors.white,
-                                            size: 13,
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          ),
-                                          Flexible(
-                                            child: Text(
-                                                "${_foundUsers[index].written_address}",
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  fontSize: 10.0,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w400,
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          TextButton(
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(Colors.white),
-                                              foregroundColor:
-                                                  MaterialStateProperty
-                                                      .all<Color>(Colors
-                                                          .pinkAccent.shade200),
+                                        Row(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              width: 20,
                                             ),
-                                            onPressed: () {
-                                              if (buttonTexts[index] ==
-                                                  'Start Delivery') {
-                                                showGeneralDialog(
-                                                    barrierColor: Colors.black
-                                                        .withOpacity(0.5),
-                                                    transitionBuilder: (context,
-                                                        a1, a2, widget) {
-                                                      return Transform.scale(
-                                                        scale: a1.value,
-                                                        child: Opacity(
-                                                            opacity: a1.value,
-                                                            child: AlertDialog(
-                                                              title: Text(
-                                                                "Start Delivery",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontSize: 12,
-                                                                ),
-                                                              ),
-                                                              actionsAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceAround,
-                                                              content: Text(
-                                                                "Are you sure you want to Start Delivery?",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.03,
-                                                                ),
-                                                              ),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                    style: ButtonStyle(
-                                                                        backgroundColor:
-                                                                            MaterialStateProperty.all(Colors
-                                                                                .red)),
-                                                                    onPressed:
-                                                                        () async {
-                                                                      setState(
-                                                                          () {
-                                                                        buttonTexts[index] =
-                                                                            "End Delivery";
-                                                                      });
-                                                                      DateTime
-                                                                          current_date =
-                                                                          DateTime
-                                                                              .now();
-
-                                                                      print(
-                                                                          'http://151.106.17.246:8080/pandamart_close/api/trip_start.php?orderid=${_foundUsers[index].id}&start_time=${current_date.toString()}');
-                                                                      var request = http.Request(
-                                                                          'GET',
-                                                                          Uri.parse(
-                                                                              'http://151.106.17.246:8080/pandamart_close/api/trip_start.php?orderid=${_foundUsers[index].id}&start_time=${current_date.toString()}'));
-
-                                                                      http.StreamedResponse
-                                                                          response =
-                                                                          await request
-                                                                              .send();
-
-                                                                      if (response
-                                                                              .statusCode ==
-                                                                          200) {
-                                                                        var resp = await response
-                                                                            .stream
-                                                                            .bytesToString();
-                                                                        print(
-                                                                            resp);
-                                                                        if (resp ==
-                                                                            'successfully !') {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                          openMap(
-                                                                              _foundUsers[index].latitude,
-                                                                              _foundUsers[index].longitude);
-                                                                          print(
-                                                                              'samad');
-                                                                        }
-                                                                      } else {
-                                                                        print(response
-                                                                            .reasonPhrase);
-                                                                      }
-                                                                    },
-                                                                    child: Text(
-                                                                      "Yes",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontFamily:
-                                                                            'Nunito',
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                        fontSize:
-                                                                            MediaQuery.of(context).size.width *
-                                                                                0.03,
-                                                                      ),
-                                                                    )),
-                                                                TextButton(
-                                                                    style: ButtonStyle(
-                                                                        backgroundColor:
-                                                                            MaterialStateProperty.all(Colors
-                                                                                .grey)),
-                                                                    onPressed: () =>
-                                                                        Navigator.of(context)
-                                                                            .pop(false),
-                                                                    child: Text(
-                                                                      "No",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontFamily:
-                                                                            'Nunito',
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                        fontSize:
-                                                                            MediaQuery.of(context).size.width *
-                                                                                0.03,
-                                                                      ),
-                                                                    )),
-                                                              ],
-                                                            )),
-                                                      );
-                                                    },
-                                                    transitionDuration:
-                                                        const Duration(
-                                                            milliseconds: 200),
-                                                    barrierDismissible: false,
-                                                    barrierLabel: '',
-                                                    context: context,
-                                                    pageBuilder: (context,
-                                                        animation1,
-                                                        animation2) {
-                                                      return const Text(
-                                                          'PAGE BUILDER');
-                                                    });
-                                              } else {
-                                                showGeneralDialog(
-                                                    barrierColor: Colors.black
-                                                        .withOpacity(0.5),
-                                                    transitionBuilder: (context,
-                                                        a1, a2, widget) {
-                                                      return Transform.scale(
-                                                        scale: a1.value,
-                                                        child: Opacity(
-                                                            opacity: a1.value,
-                                                            child: AlertDialog(
-                                                              title: Column(
-                                                                children: [
-                                                                  Row(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .center,
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      Text(
-                                                                        "End Delivery",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontWeight:
-                                                                              FontWeight.w800,
-                                                                          fontSize:
-                                                                              16,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Row(
-                                                                    children: [
-                                                                      Column(
-                                                                        children: [
-                                                                          Container(
-                                                                            child:
-                                                                                SfSignaturePad(
-                                                                              key: _signaturePadKey,
-                                                                              minimumStrokeWidth: 1,
-                                                                              maximumStrokeWidth: 3,
-                                                                              strokeColor: Colors.blue,
-                                                                              backgroundColor: Colors.grey,
-                                                                            ),
-                                                                            height:
-                                                                                200,
-                                                                            width:
-                                                                                232,
-                                                                          ),
-                                                                          /*if(_foundUsers[index].payment_method == 'Cash On Delivery')
-                                                                          TextField(controller: cancel_controller, style:
-                                                                          TextStyle(
-                                                                            fontWeight:
-                                                                            FontWeight.w400,
-                                                                            fontSize:
-                                                                            12,
-                                                                          ),)*/
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  if (_foundUsers[
-                                                                              index]
-                                                                          .payment_method ==
-                                                                      'Cash On Delivery')
-                                                                    Row(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .center,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Column(
-                                                                          children: [
-                                                                            Row(
-                                                                              children: [
-                                                                                Text(
-                                                                                  "Cash To Be Collected",
-                                                                                  style: TextStyle(
-                                                                                    fontWeight: FontWeight.w800,
-                                                                                    fontSize: 16,
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                            Row(
-                                                                              children: [
-                                                                                Text(
-                                                                                  "Rs ${_foundUsers[index].order_amount}",
-                                                                                  style: TextStyle(
-                                                                                    fontWeight: FontWeight.w800,
-                                                                                    fontSize: 16,
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-
-                                                                            /*Row(
-                                                                                children: [
-                                                                                  TextField(
-                                                                                    controller: cancel_controller,
-                                                                                    style:
-                                                                                    TextStyle(
-                                                                                      fontWeight:
-                                                                                      FontWeight.w800,
-                                                                                      fontSize:
-                                                                                      16,
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),*/
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    )
-                                                                ],
-                                                              ),
-                                                              actionsAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceAround,
-                                                              content: Text(
-                                                                "Are you sure you want to End Delivery?",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.03,
-                                                                ),
-                                                              ),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                    style: ButtonStyle(
-                                                                        backgroundColor:
-                                                                            MaterialStateProperty.all(Colors
-                                                                                .red)),
-                                                                    onPressed:
-                                                                        () async {
-                                                                      if (_foundUsers[index]
-                                                                              .payment_method ==
-                                                                          'Cash On Delivery') {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                        showGeneralDialog(
-                                                                            barrierColor: Colors.black.withOpacity(
-                                                                                0.5),
-                                                                            transitionBuilder: (context,
-                                                                                a1,
-                                                                                a2,
-                                                                                widget) {
-                                                                              return Transform.scale(
-                                                                                scale: a1.value,
-                                                                                child: Opacity(
-                                                                                    opacity: a1.value,
-                                                                                    child: AlertDialog(
-                                                                                      title: Column(
-                                                                                        children: [
-                                                                                          Row(
-                                                                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                            mainAxisAlignment: MainAxisAlignment.center,
-                                                                                            children: [
-                                                                                              Text(
-                                                                                                "Enter Collected Amount",
-                                                                                                style: TextStyle(
-                                                                                                  fontWeight: FontWeight.w800,
-                                                                                                  fontSize: 16,
-                                                                                                ),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Column(
-                                                                                                children: [
-                                                                                                  Container(
-                                                                                                    child: TextFormField(
-                                                                                                      keyboardType: TextInputType.number,
-                                                                                                      controller: collect_controller,
-                                                                                                    ),
-                                                                                                    height: 50,
-                                                                                                    width: 232,
-                                                                                                  ),
-                                                                                                ],
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                      actionsAlignment: MainAxisAlignment.spaceAround,
-                                                                                      actions: <Widget>[
-                                                                                        TextButton(
-                                                                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.pinkAccent)),
-                                                                                            onPressed: () async {
-                                                                                              DateTime current_date = DateTime.now();
-                                                                                              print('http://151.106.17.246:8080/pandamart_close/api/trip_close_by_driver_amount.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}&amount=${collect_controller.text.toString()}');
-                                                                                              var request = http.Request('GET', Uri.parse('http://151.106.17.246:8080/pandamart_close/api/trip_close_by_driver_amount.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}&amount=${collect_controller.text.toString()}'));
-                                                                                              /*ui.Image
-                                                                                                  image =
-                                                                                                      await _signaturePadKey
-                                                                                                      .currentState!
-                                                                                                      .toImage();
-                                                                                                  ByteData?
-                                                                                                  byteData =
-                                                                                                  await (image.toByteData(
-                                                                                                      format: ui.ImageByteFormat.png));
-                                                                                                  if (byteData !=
-                                                                                                      null) {
-                                                                                                    final result = await ImageGallerySaver.saveImage(byteData
-                                                                                                        .buffer
-                                                                                                        .asUint8List());
-                                                                                                    print(
-                                                                                                        result);
-                                                                                                  }*/
-
-                                                                                              http.StreamedResponse response = await request.send();
-
-                                                                                              if (response.statusCode == 200) {
-                                                                                                var res2 = await response.stream.bytesToString();
-                                                                                                if (res2 == 'successfully !') {
-                                                                                                  Navigator.pop(context);
-                                                                                                }
-                                                                                              } else {
-                                                                                                print(response.reasonPhrase);
-                                                                                              }
-                                                                                            },
-                                                                                            child: Text(
-                                                                                              "Submit",
-                                                                                              style: TextStyle(
-                                                                                                color: Colors.white,
-                                                                                                fontFamily: 'Nunito',
-                                                                                                fontWeight: FontWeight.w600,
-                                                                                                fontSize: MediaQuery.of(context).size.width * 0.03,
-                                                                                              ),
-                                                                                            )),
-                                                                                      ],
-                                                                                    )),
-                                                                              );
-                                                                            },
-                                                                            transitionDuration: const Duration(
-                                                                                milliseconds:
-                                                                                    200),
-                                                                            barrierDismissible:
-                                                                                false,
-                                                                            barrierLabel:
-                                                                                '',
-                                                                            context:
-                                                                                context,
-                                                                            pageBuilder: (context,
-                                                                                animation1,
-                                                                                animation2) {
-                                                                              return const Text('PAGE BUILDER');
-                                                                            });
-                                                                        final snackBar =
-                                                                            SnackBar(
-                                                                          content:
-                                                                              Text('Delivery Completed Successfully'),
-                                                                          duration:
-                                                                              Duration(seconds: 5),
-                                                                          action:
-                                                                              SnackBarAction(
-                                                                            label:
-                                                                                'Undo',
-                                                                            onPressed:
-                                                                                () {
-                                                                              // Some code to undo the change.
-                                                                            },
-                                                                          ),
-                                                                        );
-                                                                        ScaffoldMessenger.of(context)
-                                                                            .showSnackBar(snackBar);
-                                                                      } else {
-                                                                        setState(
-                                                                            () {
-                                                                          status =
-                                                                              true;
-                                                                        });
-                                                                        DateTime
-                                                                            current_date =
-                                                                            DateTime.now();
-                                                                        print(
-                                                                            'http://151.106.17.246:8080/pandamart_close/api/trip_close_by_driver.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}');
-                                                                        var request = http.Request(
-                                                                            'GET',
-                                                                            Uri.parse('http://151.106.17.246:8080/pandamart_close/api/trip_close_by_driver.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}'));
-                                                                        ui.Image
-                                                                            image =
-                                                                            await _signaturePadKey.currentState!.toImage();
-                                                                        ByteData?
-                                                                            byteData =
-                                                                            await (image.toByteData(format: ui.ImageByteFormat.png));
-                                                                        if (byteData !=
-                                                                            null) {
-                                                                          final result = await ImageGallerySaver.saveImage(byteData
-                                                                              .buffer
-                                                                              .asUint8List());
-                                                                          print(
-                                                                              result);
-                                                                        }
-
-                                                                        http.StreamedResponse
-                                                                            response =
-                                                                            await request.send();
-
-                                                                        if (response.statusCode ==
-                                                                            200) {
-                                                                          var res2 = await response
-                                                                              .stream
-                                                                              .bytesToString();
-                                                                          if (res2 ==
-                                                                              'successfully !') {
-                                                                            Navigator.pop(context);
-                                                                          }
-                                                                        } else {
-                                                                          print(
-                                                                              response.reasonPhrase);
-                                                                        }
-                                                                      }
-                                                                    },
-                                                                    child: Text(
-                                                                      "Yes",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontFamily:
-                                                                            'Nunito',
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                        fontSize:
-                                                                            MediaQuery.of(context).size.width *
-                                                                                0.03,
-                                                                      ),
-                                                                    )),
-                                                                TextButton(
-                                                                    style: ButtonStyle(
-                                                                        backgroundColor:
-                                                                            MaterialStateProperty.all(Colors
-                                                                                .grey)),
-                                                                    onPressed: () =>
-                                                                        Navigator.of(context)
-                                                                            .pop(false),
-                                                                    child: Text(
-                                                                      "No",
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontFamily:
-                                                                            'Nunito',
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                        fontSize:
-                                                                            MediaQuery.of(context).size.width *
-                                                                                0.03,
-                                                                      ),
-                                                                    )),
-                                                              ],
-                                                            )),
-                                                      );
-                                                    },
-                                                    transitionDuration:
-                                                        const Duration(
-                                                            milliseconds: 200),
-                                                    barrierDismissible: false,
-                                                    barrierLabel: '',
-                                                    context: context,
-                                                    pageBuilder: (context,
-                                                        animation1,
-                                                        animation2) {
-                                                      return const Text(
-                                                          'PAGE BUILDER');
-                                                    });
-                                              }
-                                            },
-                                            child: Text(buttonTexts[index]),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          TextButton(
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(Colors.white),
-                                              foregroundColor:
-                                                  MaterialStateProperty
-                                                      .all<Color>(Colors
-                                                          .pinkAccent.shade200),
+                                            Icon(
+                                              Icons.location_on,
+                                              color:Color(0xff2b3993),
+                                              size: 13,
                                             ),
-                                            onPressed: () {
-                                              showGeneralDialog(
-                                                  barrierColor: Colors.black
-                                                      .withOpacity(0.5),
-                                                  transitionBuilder: (context,
-                                                      a1, a2, widget) {
-                                                    return Transform.scale(
-                                                      scale: a1.value,
-                                                      child: Opacity(
-                                                          opacity: a1.value,
-                                                          child: AlertDialog(
-                                                            title: Text(
-                                                              "Cancel Order",
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                fontSize: 12,
-                                                              ),
-                                                            ),
-                                                            actionsAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceAround,
-                                                            content: Text(
-                                                              "Are you sure you want to Cancel Order?",
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    0.03,
-                                                              ),
-                                                            ),
-                                                            actions: <Widget>[
-                                                              TextButton(
-                                                                  style: ButtonStyle(
-                                                                      backgroundColor:
-                                                                          MaterialStateProperty.all(Colors
-                                                                              .red)),
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop(
-                                                                            false);
-                                                                    showGeneralDialog(
-                                                                        barrierColor: Colors.black.withOpacity(
-                                                                            0.5),
-                                                                        transitionBuilder: (context,
-                                                                            a1,
-                                                                            a2,
-                                                                            widget) {
-                                                                          return Transform
-                                                                              .scale(
-                                                                            scale:
-                                                                                a1.value,
-                                                                            child: Opacity(
-                                                                                opacity: a1.value,
-                                                                                child: AlertDialog(
-                                                                                  title: Text(
-                                                                                    "Add Note",
-                                                                                    style: TextStyle(
-                                                                                      fontWeight: FontWeight.w400,
-                                                                                      fontSize: 12,
-                                                                                    ),
-                                                                                  ),
-                                                                                  actionsAlignment: MainAxisAlignment.spaceAround,
-                                                                                  content: TextField(
-                                                                                    controller: cancel_controller,
-                                                                                    style: TextStyle(
-                                                                                      fontWeight: FontWeight.w600,
-                                                                                      fontSize: MediaQuery.of(context).size.width * 0.03,
-                                                                                    ),
-                                                                                  ),
-                                                                                  actions: <Widget>[
-                                                                                    TextButton(
-                                                                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
-                                                                                        onPressed: () async {
-                                                                                          DateTime current_date = DateTime.now();
-                                                                                          print('http://151.106.17.246:8080/pandamart_close/api/cancel_order.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}&description=${cancel_controller.text.toString()}');
-                                                                                          var request = http.Request('GET', Uri.parse('http://151.106.17.246:8080/pandamart_close/api/cancel_order.php?orderid=${_foundUsers[index].id}&close_time=${current_date.toLocal().toString()}&lat_lng=${_currentPosition!.latitude.toString()} ${_currentPosition!.longitude.toString()}&description=${cancel_controller.text.toString()}'));
-                                                                                          // ui.Image
-                                                                                          // image =
-                                                                                          //     await _signaturePadKey
-                                                                                          //     .currentState!
-                                                                                          //     .toImage();
-                                                                                          // ByteData?
-                                                                                          // byteData =
-                                                                                          // await (image.toByteData(
-                                                                                          //     format: ui.ImageByteFormat.png));
-                                                                                          // if (byteData !=
-                                                                                          //     null) {
-                                                                                          //   final result = await ImageGallerySaver.saveImage(byteData
-                                                                                          //       .buffer
-                                                                                          //       .asUint8List());
-                                                                                          //   print(
-                                                                                          //       result);
-                                                                                          // }
-
-                                                                                          http.StreamedResponse response = await request.send();
-
-                                                                                          if (response.statusCode == 200) {
-                                                                                            var res2 = await response.stream.bytesToString();
-                                                                                            if (res2 == 'successfully !') {
-                                                                                              Navigator.of(context).pop(false);
-                                                                                            }
-                                                                                          } else {
-                                                                                            print(response.reasonPhrase);
-                                                                                          }
-                                                                                        },
-                                                                                        child: Text(
-                                                                                          "Submit",
-                                                                                          style: TextStyle(
-                                                                                            color: Colors.white,
-                                                                                            fontFamily: 'Nunito',
-                                                                                            fontWeight: FontWeight.w600,
-                                                                                            fontSize: MediaQuery.of(context).size.width * 0.03,
-                                                                                          ),
-                                                                                        )),
-                                                                                  ],
-                                                                                )),
-                                                                          );
-                                                                        },
-                                                                        transitionDuration: const Duration(
-                                                                            milliseconds:
-                                                                                200),
-                                                                        barrierDismissible:
-                                                                            false,
-                                                                        barrierLabel:
-                                                                            '',
-                                                                        context:
-                                                                            context,
-                                                                        pageBuilder: (context,
-                                                                            animation1,
-                                                                            animation2) {
-                                                                          return const Text(
-                                                                              'PAGE BUILDER');
-                                                                        });
-                                                                  },
-                                                                  child: Text(
-                                                                    "Yes",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontFamily:
-                                                                          'Nunito',
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      fontSize: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width *
-                                                                          0.03,
-                                                                    ),
-                                                                  )),
-                                                              TextButton(
-                                                                  style: ButtonStyle(
-                                                                      backgroundColor:
-                                                                          MaterialStateProperty.all(Colors
-                                                                              .grey)),
-                                                                  onPressed: () =>
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop(
-                                                                              false),
-                                                                  child: Text(
-                                                                    "No",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontFamily:
-                                                                          'Nunito',
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      fontSize: MediaQuery.of(context)
-                                                                              .size
-                                                                              .width *
-                                                                          0.03,
-                                                                    ),
-                                                                  )),
-                                                            ],
-                                                          )),
-                                                    );
-                                                  },
-                                                  transitionDuration:
-                                                      const Duration(
-                                                          milliseconds: 200),
-                                                  barrierDismissible: false,
-                                                  barrierLabel: '',
-                                                  context: context,
-                                                  pageBuilder: (context,
-                                                      animation1, animation2) {
-                                                    return const Text(
-                                                        'PAGE BUILDER');
-                                                  });
-                                            },
-                                            child: Text('Cancel Order'),
-                                          ),
-                                          /*SizedBox(
-                                            width: 5,
-                                          ),*/
-                                          /*TextButton(
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all<
-                                                      Color>(Colors.white),
-                                              foregroundColor:
-                                                  MaterialStateProperty
-                                                      .all<Color>(Colors
-                                                          .pinkAccent.shade200),
+                                            SizedBox(
+                                              width: 4,
                                             ),
-                                            onPressed: () {
-                                              showGeneralDialog(
-                                                  barrierColor: Colors.black
-                                                      .withOpacity(0.5),
-                                                  transitionBuilder: (context,
-                                                      a1, a2, widget) {
-                                                    return Transform.scale(
-                                                      scale: a1.value,
-                                                      child: Opacity(
-                                                          opacity: a1.value,
-                                                          child: AlertDialog(
-                                                            title: Text(
-                                                              "Cash On Delivery",
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .w400,
-                                                                fontSize: 12,
-                                                              ),
-                                                            ),
-                                                            actionsAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                            content: Text(
-                                                              "Are you sure you want to Cancel Order?",
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .w600,
-                                                                fontSize: MediaQuery.of(
-                                                                    context)
-                                                                    .size
-                                                                    .width *
-                                                                    0.03,
-                                                              ),
-                                                            ),
-                                                            actions: <Widget>[
-                                                              TextButton(
-                                                                  style: ButtonStyle(
-                                                                      backgroundColor:
-                                                                      MaterialStateProperty.all(Colors
-                                                                          .red)),
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.of(
-                                                                        context)
-                                                                        .pop(
-                                                                        false);
+                                            Flexible(
+                                              child: Text(
+                                                  _foundUsers[index].delivery_based,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 10.0,
+                                                    color:Color(0xff2b3993),
+                                                    fontWeight: FontWeight.w800,
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Icon(
+                                              Icons.payment,
+                                              color:Color(0xff2b3993),
+                                              size: 13,
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Flexible(
+                                              child: Text(
+                                                  "Rs. "+_foundUsers[index].amount,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 10.0,
+                                                    color: Color(0xff2b3993),
+                                                    fontWeight: FontWeight.w800,
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              width: 20,
+                                            ),
 
-                                                                  },
-                                                                  child: Text(
-                                                                    "Yes",
-                                                                    style:
-                                                                    TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontFamily:
-                                                                      'Nunito',
-                                                                      fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                      fontSize: MediaQuery.of(context)
-                                                                          .size
-                                                                          .width *
-                                                                          0.03,
-                                                                    ),
-                                                                  )),
-                                                              TextButton(
-                                                                  style: ButtonStyle(
-                                                                      backgroundColor:
-                                                                      MaterialStateProperty.all(Colors
-                                                                          .grey)),
-                                                                  onPressed: () =>
-                                                                      Navigator.of(
-                                                                          context)
-                                                                          .pop(
-                                                                          false),
-                                                                  child: Text(
-                                                                    "No",
-                                                                    style:
-                                                                    TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontFamily:
-                                                                      'Nunito',
-                                                                      fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                      fontSize: MediaQuery.of(context)
-                                                                          .size
-                                                                          .width *
-                                                                          0.03,
-                                                                    ),
-                                                                  )),
-                                                            ],
-                                                          )),
-                                                    );
-                                                  },
-                                                  transitionDuration:
-                                                  const Duration(
-                                                      milliseconds: 200),
-                                                  barrierDismissible: false,
-                                                  barrierLabel: '',
-                                                  context: context,
-                                                  pageBuilder: (context,
-                                                      animation1, animation2) {
-                                                    return const Text(
-                                                        'PAGE BUILDER');
-                                                  });
-                                            },
-                                            child: Text('COD'),
-                                          )*/
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                    ],
+
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
@@ -1351,6 +339,15 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                 ),
               ],
             ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.amber,
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Create_Order(),
+              ));
+            },
+            child: FaIcon(FontAwesomeIcons.opencart,color: Colors.black,),
           ),
         ),
       ),

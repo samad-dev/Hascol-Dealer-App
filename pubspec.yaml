@@ -36,7 +36,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_staggered_grid_view: ^0.4.1
+
   intl: ^0.17.0
+  fluttertoast: ^8.0.8
+  google_maps_flutter: ^2.3.0
   font_awesome_flutter: ^10.4.0
   persistent_bottom_nav_bar: ^5.0.2
   http: ^0.13.3
@@ -48,6 +51,11 @@ dependencies:
   syncfusion_flutter_signaturepad: ^21.2.8
   permission_handler: ^10.2.0
   image_gallery_saver: ^1.6.8
+  animated_bottom_navigation_bar: ^1.2.0
+  auto_size_text: ^3.0.0
+  circular_reveal_animation: ^2.0.1
+  fl_chart: ^0.62.0
+
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +67,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  change_app_package_name: ^1.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -79,6 +88,7 @@ flutter:
     - Assets/image1.png
     - Assets/image2.png
     - Assets/foodpanda_logo.png
+    - Assets/haslogo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

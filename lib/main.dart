@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Foodpanda',
+      title: 'Hascol',
       home: SplashScreen(),
     );
   }
@@ -38,9 +38,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      backgroundColor: Color(0xff2b3993),
       body: Center(
-        child: Image.asset('Assets/foodpanda_logo.png'),
+        child: Padding(
+          padding: const EdgeInsets.all(28.0),
+          child: Image.asset('Assets/haslogo.png'),
+        ),
       ),
     );
   }
@@ -91,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Foodpanda'),
+            Text('Hascol'),
             TextField(
               decoration: InputDecoration(
                 labelText: 'Email',
@@ -118,23 +121,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-/*
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 
-import 'Home.dart';
-
-
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Home(),
-      debugShowCheckedModeBanner: false,
-    );
-
-  }
-
-}*/

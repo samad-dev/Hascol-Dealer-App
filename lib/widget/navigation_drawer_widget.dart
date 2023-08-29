@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pandamart/Screens/Dashboard.dart';
+import 'package:pandamart/Screens/complaint.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +26,9 @@ class NavigationDrawerWidget extends State<Nav> {
   ];
   final itemsSecond = [
     DrawerItem(title: 'Orders', icon: Icons.shopping_cart_checkout_rounded),
+  ];
+  final itemsThird = [
+    DrawerItem(title: 'Complaint', icon: Icons.message),
   ];
 /*
   final itemsSecond = [
@@ -60,13 +65,13 @@ class NavigationDrawerWidget extends State<Nav> {
       width: isCollapsed ? MediaQuery.of(context).size.width * 0.2 : null,
       child: Drawer(
         child: Container(
-          color: Color(0xffff2d55),
+          color: Color(0xff2b3993),
           child: Column(
             children: [
               Container(
                 padding: EdgeInsets.symmetric(vertical: 14).add(safeArea),
                 width: double.infinity,
-                color: Color(0xffff2d55),
+                color: Color(0xff2b3993),
                 child: buildHeader(isCollapsed),
               ),
               const SizedBox(height: 3),
@@ -74,6 +79,7 @@ class NavigationDrawerWidget extends State<Nav> {
               const SizedBox(height: 3),
               buildList(items: itemsFirst, indexOffset: 0, isCollapsed: isCollapsed),
               const SizedBox(height: 3),
+
               Divider(color: Colors.white70),
               const SizedBox(height: 3),
               buildList(
@@ -84,6 +90,9 @@ class NavigationDrawerWidget extends State<Nav> {
               const SizedBox(height: 3),
               Divider(color: Colors.white70),
               const SizedBox(height: 3),
+              buildList(items: itemsThird, indexOffset: 2, isCollapsed: isCollapsed),
+              const SizedBox(height: 3),
+              Divider(color: Colors.white70),
               /*buildList(
                 indexOffset: 1,
                 items: itemsSecond,
@@ -150,6 +159,9 @@ class NavigationDrawerWidget extends State<Nav> {
         break;
       case 1:
         navigateTo(Home2());
+        break;
+      case 2:
+        navigateTo(Create_Comp());
         break;
       // case 2:
       //   navigateTo(AlertList());
@@ -228,7 +240,7 @@ class NavigationDrawerWidget extends State<Nav> {
   Widget buildHeader(bool isCollapsed) => isCollapsed
       ? new Icon(Icons.account_circle , color: Colors.white,)
       :  Container(
-    color: Color(0xffff2d55),
+    color: Color(0xff2b3993),
     height: 150,
     padding: EdgeInsets.only(top: 10.0),
     child: Column(
@@ -247,12 +259,12 @@ class NavigationDrawerWidget extends State<Nav> {
           ),
         ),
         Text(
-          "PandaMart",
-          style: TextStyle(color: Colors.white, fontSize: 20),
+          "Hascol",
+          style: TextStyle(color: Colors.amber, fontSize: 20),
         ),
         Text(
-         "Driver Application",
-          style: TextStyle(color: Colors.white, fontSize: 14),
+         "Dealer Application",
+          style: TextStyle(color: Colors.amber, fontSize: 14),
         ),
       ],
     ),
