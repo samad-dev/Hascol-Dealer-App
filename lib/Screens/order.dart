@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:flutter/material.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,6 +12,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:provider/provider.dart';
 import 'package:pandamart/provider/navigator_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui' as ui;
@@ -37,6 +40,12 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
   String dropdownValue1 = "Delivered";
   String dropdownValue2 = "Refinery";
   String dropdownValue3 = "NA";
+  int hsd = 350;
+  int hobc = 330;
+  int pmg = 332;
+  int hsdt = 0;
+  int hobct = 0;
+  int pmgt = 0;
   late Future<List<Order>> futureAlbum;
   String number = "";
   List<String> buttonTexts = [];
@@ -56,12 +65,15 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
   TextEditingController uidController = new TextEditingController();
   TextEditingController transactionController = new TextEditingController();
   TextEditingController vehicleController = new TextEditingController();
-
+  TextEditingController tlcontroller = new TextEditingController();
+  var _site = "Self";
   List data = []; //edited line
-
+  List data2 = [];
   Future<String> getSWData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var user_id = await sharedPreferences.getString("userId");
     var res = await http.get(Uri.parse(
-        "http://151.106.17.246:8080/hascol/api/all_depot.php?accesskey=12345"));
+        "http://151.106.17.246:8080/hascol/api/dealer_depot.php?accesskey=12345&user_id=${user_id}"));
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -89,6 +101,8 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('EEE d MMM kk:mm:ss').format(now);
     return ChangeNotifierProvider(
       create: (context) => NavigationProvider(),
       child: MaterialApp(
@@ -106,7 +120,7 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
                 Navigator.pop(context);
               },
             ),
-            backgroundColor: const Color(0xff2b3993),
+            backgroundColor: const Color(0xff06298a),
             title: const Text("Create Orders"),
           ),
           body: Container(
@@ -120,13 +134,89 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
               child: ListView(
                 children: <Widget>[
                   SizedBox(
-                    height: 30,
+                    height: 10,
+                  ),
+                  Card(
+                    color: Color(0xffF0F0F0),
+                    elevation: 15,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 1.19,
+                      height: 140,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //CircleAvatar
+                            const SizedBox(
+                              height: 10,
+                            ), //SizedBox
+                            Text(
+                              'Account Balance',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: Color(0xff000000),
+                                fontWeight: FontWeight.w300,
+                                fontStyle: FontStyle.normal,
+                              ),
+                            ), //Text
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                    backgroundColor: Color(0xff12283D),
+                                    radius: 15,
+                                    child: Icon(
+                                      FontAwesomeIcons.cableCar,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ) //Text
+                                    ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '3,75,000 Rs.',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Updated On : ${formattedDate}',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 10,
+                                        color: Color(0xff8A8A8A),
+                                        fontWeight: FontWeight.w300,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+                            //SizedBox
+                            //T //SizedBox
+                            //SizedBox
+                          ],
+                        ), //Column
+                      ), //Padding
+                    ), //SizedBox,
                   ),
                   Card(
                     shape:
                         Border(left: BorderSide(color: Colors.red, width: 3)),
                     elevation: 10,
-                    color: Colors.white,
+                    color: Color(0xffF0F0F0),
                     child: Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: Form(
@@ -140,38 +230,109 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 15,
-                                      color: Color(0xff2b3993)),
+                                      color: Color(0xff06298a)),
                                 )
                               ],
                             ),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                Flexible(
+                                  child: SizedBox(
+                                    width: 150,
+                                    child: TextFormField(
+                                      onFieldSubmitted: (value){
+                                        print(value);
+                                        setState(() {
+                                          hsdt = int.parse(value)*350;
+                                        });
+                                      },
+                                      onTapOutside: (value){
+                                        print(value);
+                                      },
+                                      controller: hsdController,
+                                      keyboardType: TextInputType.number,
+                                      style: GoogleFonts.poppins(
+                                        color: Color(0xffa8a8a8),
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 16,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintStyle: GoogleFonts.poppins(
+                                          color: Color(0xffa8a8a8),
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        labelStyle: GoogleFonts.poppins(
+                                          color: Color(0xffa8a8a8),
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        filled: true,
+                                        fillColor: Color(0xffF1F4FF),
+                                        hintText: 'Quantity for HSD',
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2,
+                                                color: Color(0xff3b5fe0)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2,
+                                                color: Color(0xffF1F4FF)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        labelText: 'HSD',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "Quantity for HSD",
+                                    "x",
                                     style: TextStyle(fontSize: 13),
                                   ),
                                 ),
                                 SizedBox(
                                   width: 15,
                                 ),
-                                Flexible(
-                                  child: TextFormField(
-                                    controller: hsdController,
-                                    keyboardType: TextInputType.number,
-                                    style: TextStyle(
-                                      color: Colors.black45,
-                                    ),
-                                    decoration: InputDecoration(
-                                        focusColor: Color(0xff2b3993),
-
-                                        labelText: 'Quantity In Litres',
-                                        labelStyle: TextStyle(
-                                            fontSize: 15, color: Color(0xff2b3993))),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    hsd.toString(),
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "=",
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                   hsdt.toString(),
+                                    style: TextStyle(fontSize: 13),
                                   ),
                                 ),
                               ],
@@ -183,29 +344,95 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                Flexible(
+                                  child: SizedBox(
+                                    width: 150,
+                                    child: TextFormField(
+                                      onFieldSubmitted: (value){
+                                        print(value);
+                                        setState(() {
+                                          hobct = int.parse(value)*330;
+                                        });
+                                      },
+                                      controller: hobcController,
+                                      keyboardType: TextInputType.number,
+                                      style: GoogleFonts.poppins(
+                                        color: Color(0xffa8a8a8),
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 16,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintStyle: GoogleFonts.poppins(
+                                          color: Color(0xffa8a8a8),
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        labelStyle: GoogleFonts.poppins(
+                                          color: Color(0xffa8a8a8),
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        filled: true,
+                                        fillColor: Color(0xffF1F4FF),
+                                        hintText: 'Quantity for HOBC',
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2,
+                                                color: Color(0xff3b5fe0)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2,
+                                                color: Color(0xffF1F4FF)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        labelText: 'HOBC',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "Quantity for HOBC",
+                                    "x",
                                     style: TextStyle(fontSize: 13),
                                   ),
                                 ),
                                 SizedBox(
                                   width: 15,
                                 ),
-                                Flexible(
-                                  child: TextFormField(
-                                    controller: hobcController,
-                                    keyboardType: TextInputType.number,
-                                    style: TextStyle(
-                                      color: Colors.black45,
-                                    ),
-                                    decoration: InputDecoration(
-                                        focusColor: Color(0xff2b3993),
-
-                                        labelText: 'Quantity In Litres',
-                                        labelStyle: TextStyle(
-                                            fontSize: 15, color: Color(0xff2b3993))),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    hobc.toString(),
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "=",
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    hobct.toString(),
+                                    style: TextStyle(fontSize: 13),
                                   ),
                                 ),
                               ],
@@ -217,29 +444,95 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                Flexible(
+                                  child: SizedBox(
+                                    width: 150,
+                                    child: TextFormField(
+                                      onFieldSubmitted: (value){
+                                        print(value);
+                                        setState(() {
+                                          pmgt = int.parse(value)*332;
+                                        });
+                                      },
+                                      controller: pmgController,
+                                      keyboardType: TextInputType.number,
+                                      style: GoogleFonts.poppins(
+                                        color: Color(0xffa8a8a8),
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 16,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintStyle: GoogleFonts.poppins(
+                                          color: Color(0xffa8a8a8),
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        labelStyle: GoogleFonts.poppins(
+                                          color: Color(0xffa8a8a8),
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                        filled: true,
+                                        fillColor: Color(0xffF1F4FF),
+                                        hintText: 'Quantity for PMG',
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2,
+                                                color: Color(0xff3b5fe0)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 2,
+                                                color: Color(0xffF1F4FF)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                        labelText: 'PMG',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    "Quantity for PMG",
+                                    "x",
                                     style: TextStyle(fontSize: 13),
                                   ),
                                 ),
                                 SizedBox(
                                   width: 15,
                                 ),
-                                Flexible(
-                                  child: TextFormField(
-                                    controller: pmgController,
-                                    keyboardType: TextInputType.number,
-                                    style: TextStyle(
-                                      color: Colors.black45,
-                                    ),
-                                    decoration: InputDecoration(
-                                        focusColor: Color(0xff2b3993),
-
-                                        labelText: 'Quantity In Litres',
-                                        labelStyle: TextStyle(
-                                            fontSize: 15, color: Color(0xff2b3993))),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    pmg.toString(),
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "=",
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    pmgt.toString(),
+                                    style: TextStyle(fontSize: 13),
                                   ),
                                 ),
                               ],
@@ -330,16 +623,16 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
                                 color: Colors.black45,
                               ),
                               decoration: InputDecoration(
-                                  focusColor: Color(0xff2b3993),
+                                  focusColor: Color(0xff06298a),
                                   focusedBorder: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Color(0xff2b3993))),
+                                          BorderSide(color: Color(0xff06298a))),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Color(0xff2b3993))),
+                                          BorderSide(color: Color(0xff06298a))),
                                   labelText: 'Quantity In Litres',
                                   labelStyle: TextStyle(
-                                      fontSize: 15, color: Color(0xff2b3993))),
+                                      fontSize: 15, color: Color(0xff06298a))),
                             ),
                             SizedBox(
                               height: 13,
@@ -352,7 +645,7 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 15,
-                                      color: Color(0xff2b3993)),
+                                      color: Color(0xff06298a)),
                                 )
                               ],
                             ),
@@ -422,20 +715,160 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
                                 color: Colors.black45,
                               ),
                               decoration: InputDecoration(
-                                  focusColor: Color(0xff2b3993),
+                                  focusColor: Color(0xff06298a),
                                   focusedBorder: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Color(0xff2b3993))),
+                                          BorderSide(color: Color(0xff06298a))),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Color(0xff2b3993))),
+                                          BorderSide(color: Color(0xff06298a))),
                                   labelText: 'Enter Amount',
                                   labelStyle: TextStyle(
-                                      fontSize: 15, color: Color(0xff2b3993))),
+                                      fontSize: 15, color: Color(0xff06298a))),
                             ),
                             SizedBox(
                               height: 13,
                             ),*/
+                            SizedBox(height: 10),
+                            DropdownButton(
+                              underline: Container(), //remove underline
+                              isExpanded: true,
+                              icon: Padding( //Icon at tail, arrow bottom is default icon
+                                  padding: EdgeInsets.only(left:20),
+                                  child:Icon(Icons.arrow_circle_down_sharp)
+                              ),
+                              iconEnabledColor: Colors.deepOrange,
+                              style: const TextStyle(
+                                  color: Colors.black54, fontSize: 13),
+                              items: data.map((item) {
+                                return DropdownMenuItem(
+                                  child: new Text(item['consignee_name'],style: GoogleFonts.poppins(
+                                    color: Color(0xffa8a8a8),
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.normal,
+                                  ),),
+                                  value: item['id'].toString(),
+                                );
+                              }).toList(),
+                              onChanged: (String? newVal) {
+                                setState(() {
+                                  _mySelection = newVal!;
+                                  // print(_mySelection);
+                                });
+                              },
+                              value: _mySelection,
+                              hint: Text("Select Depot",style: GoogleFonts.poppins(
+                                color: Color(0xff000000),
+                                fontWeight: FontWeight.w300,
+                                fontSize: 16,
+                                fontStyle: FontStyle.normal,
+                              ),),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                ListTile(
+                                  title: const Text('Self'),
+                                  leading: Radio(
+                                    value: "Self",
+                                    groupValue: _site,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _site = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text('Company'),
+                                  leading: Radio(
+                                    value: "Company",
+                                    groupValue: _site,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _site = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (_site == "Self")
+                              TextFormField(
+                                controller: tlcontroller,
+                                keyboardType: TextInputType.number,
+                                style: GoogleFonts.poppins(
+                                  color: Color(0xffa8a8a8),
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                                decoration: InputDecoration(
+                                  hintStyle: GoogleFonts.poppins(
+                                    color: Color(0xffa8a8a8),
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                  labelStyle: GoogleFonts.poppins(
+                                    color: Color(0xffa8a8a8),
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                  filled: true,
+                                  fillColor: Color(0xffF1F4FF),
+                                  hintText: 'TL #',
+
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: Color(0xff3b5fe0)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: Color(0xffF1F4FF)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  labelText: 'Enter TL #',
+                                ),
+                              ),
+                            if (_site == "Company")
+                              DropdownButton(
+                                underline: Container(), //remove underline
+                                isExpanded: true,
+                                icon: Padding( //Icon at tail, arrow bottom is default icon
+                                    padding: EdgeInsets.only(left:20),
+                                    child:Icon(Icons.arrow_circle_down_sharp)
+                                ),
+                                iconEnabledColor: Colors.deepOrange,
+                                style: const TextStyle(
+                                    color: Colors.black54, fontSize: 13),
+                                items: data.map((item) {
+                                  return DropdownMenuItem(
+                                    child: new Text(item['consignee_name'],style: GoogleFonts.poppins(
+                                      color: Color(0xffa8a8a8),
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                    ),),
+                                    value: item['id'].toString(),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newVal) {
+                                  setState(() {
+                                    _mySelection = newVal!;
+                                    // print(_mySelection);
+                                  });
+                                },
+                                value: _mySelection,
+                                hint: Text("Select Depot",style: GoogleFonts.poppins(
+                                  color: Color(0xff000000),
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.normal,
+                                ),),
+                              ),
                             Padding(
                               padding: EdgeInsets.only(top: 20),
                               child: MaterialButton(
@@ -468,7 +901,7 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50)),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -523,35 +956,36 @@ class _Order extends State<Create_Order> with SingleTickerProviderStateMixin {
   }
 }
 
-uploaddata(String quantity,String ptype,String dbased,String depot,String bank,String amount,BuildContext context,hsdq,pmgq,hobcq) async {
+uploaddata(String quantity, String ptype, String dbased, String depot,
+    String bank, String amount, BuildContext context, hsdq, pmgq, hobcq) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   var user_id = await sharedPreferences.getString("userId");
-  print("http://151.106.17.246:8080/hascol/api/hascol_orders.php?delivery_based=${dbased}&quantity=${quantity}&depot=${depot}&uid=${user_id}&bank=${bank}&product=${ptype}&amount=${amount}&traid&vehi=&image=&imei=&HSD_qty=${hsdq}&HOBC_qty=${hobcq}&PMG_qty=${pmgq}");
+  print(
+      "http://151.106.17.246:8080/hascol/api/hascol_orders.php?delivery_based=${dbased}&quantity=${quantity}&depot=${depot}&uid=${user_id}&bank=${bank}&product=${ptype}&amount=${amount}&traid&vehi=&image=&imei=&HSD_qty=${hsdq}&HOBC_qty=${hobcq}&PMG_qty=${pmgq}");
   var jsonResponce = null;
   // var responce = await http.post(Uri.parse("https://gariwala.pk/appapi/api/cus_reg.php?accesskey=12345&fname="+fName+"&address="+address+"&lname="+lName+"&number="+num+"&email="+email+"&user="+user+"&pass="+pass+"&state="+state+"&city="+city,)
 
-    var response = await http.post(Uri.parse("http://151.106.17.246:8080/hascol/api/hascol_orders.php?delivery_based=${dbased}&quantity=${quantity}&depot=${depot}&uid=${user_id}&bank=${bank}&product=${ptype}&amount=${amount}&traid&vehi=&image=&imei=&HSD_qty=${hsdq}&HOBC_qty=${hobcq}&PMG_qty=${pmgq}"));
+  var response = await http.post(Uri.parse(
+      "http://151.106.17.246:8080/hascol/api/hascol_orders.php?delivery_based=${dbased}&quantity=${quantity}&depot=${depot}&uid=${user_id}&bank=${bank}&product=${ptype}&amount=${amount}&traid&vehi=&image=&imei=&HSD_qty=${hsdq}&HOBC_qty=${hobcq}&PMG_qty=${pmgq}"));
 
-    // if(jsonResponce.toString() == "{data: }"){
-    if (jsonResponce.toString() != null) {
-      print("if data is null : " + jsonResponce.toString());
+  // if(jsonResponce.toString() == "{data: }"){
+  if (jsonResponce.toString() != null) {
+    print("if data is null : " + jsonResponce.toString());
 
-      Fluttertoast.showToast(
-          msg: "Order Generated Successfully",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
-    else
-      { Fluttertoast.showToast(
-          msg: "Order Not Generated",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-
-      }
+    Fluttertoast.showToast(
+        msg: "Order Generated Successfully",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  } else {
+    Fluttertoast.showToast(
+        msg: "Order Not Generated",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
 }

@@ -109,14 +109,14 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                 Navigator.pop(context);
               } ,
             ) ,
-            backgroundColor: const Color(0xff2b3993),
+            backgroundColor: const Color(0xff06298a),
             title: const Text("Orders"),
           ),
 
           body: RefreshIndicator(
             displacement: 250,
-            backgroundColor: Color(0xff2b3993),
-            color: Color(0xff2b3993),
+            backgroundColor: Color(0xff06298a),
+            color: Color(0xff06298a),
             strokeWidth: 3,
             triggerMode: RefreshIndicatorTriggerMode.onEdge,
             onRefresh: () async {
@@ -180,7 +180,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                 _foundUsers[index].depot,
                                             style: TextStyle(
                                               fontSize: 15.0,
-                                              color: Color(0xff2b3993),
+                                              color: Color(0xff06298a),
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -199,7 +199,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                         whiteSubHeadingTextStyle
                                                             .copyWith(
                                                                 color:
-                                                                    Color(0xff2b3993),
+                                                                    Color(0xff06298a),
                                                                 fontSize: 12,
                                                                 fontWeight:
                                                                     FontWeight
@@ -214,7 +214,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                         whiteSubHeadingTextStyle
                                                             .copyWith(
                                                                 color:
-                                                                    Color(0xff2b3993),
+                                                                    Color(0xff06298a),
                                                                 fontSize: 12,
                                                                 fontWeight:
                                                                     FontWeight
@@ -230,7 +230,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                   whiteSubHeadingTextStyle
                                                       .copyWith(
                                                       color:
-                                                      Color(0xff2b3993),
+                                                      Color(0xff06298a),
                                                       fontSize: 12,
                                                       fontWeight:
                                                       FontWeight
@@ -245,7 +245,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                     whiteSubHeadingTextStyle
                                                         .copyWith(
                                                         color:
-                                                        Color(0xff2b3993),
+                                                        Color(0xff06298a),
                                                         fontSize: 12,
                                                         fontWeight:
                                                         FontWeight
@@ -261,7 +261,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                     whiteSubHeadingTextStyle
                                                         .copyWith(
                                                         color:
-                                                        Color(0xff2b3993),
+                                                        Color(0xff06298a),
                                                         fontSize: 12,
                                                         fontWeight:
                                                         FontWeight
@@ -276,7 +276,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                     whiteSubHeadingTextStyle
                                                         .copyWith(
                                                         color:
-                                                        Color(0xff2b3993),
+                                                        Color(0xff06298a),
                                                         fontSize: 12,
                                                         fontWeight:
                                                         FontWeight
@@ -288,7 +288,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                 children: <Widget>[
                                                   Icon(
                                                           Icons.watch_later_outlined,
-                                                          color:Color(0xff2b3993),
+                                                          color:Color(0xff06298a),
                                                           size: 13,
                                                         ),
                                                   SizedBox(
@@ -304,7 +304,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                                         whiteSubHeadingTextStyle
                                                             .copyWith(
                                                                 color:
-                                                                    Color(0xff2b3993),
+                                                                    Color(0xff06298a),
                                                                 fontSize: 12,
                                                                 fontWeight:
                                                                     FontWeight
@@ -329,7 +329,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                         //     ),
                                         //     Icon(
                                         //       Icons.location_on,
-                                        //       color:Color(0xff2b3993),
+                                        //       color:Color(0xff06298a),
                                         //       size: 13,
                                         //     ),
                                         //     SizedBox(
@@ -341,7 +341,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                         //           overflow: TextOverflow.ellipsis,
                                         //           style: TextStyle(
                                         //             fontSize: 10.0,
-                                        //             color:Color(0xff2b3993),
+                                        //             color:Color(0xff06298a),
                                         //             fontWeight: FontWeight.w800,
                                         //           )),
                                         //     ),
@@ -357,7 +357,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                         //     ),
                                         //     Icon(
                                         //       Icons.payment,
-                                        //       color:Color(0xff2b3993),
+                                        //       color:Color(0xff06298a),
                                         //       size: 13,
                                         //     ),
                                         //     SizedBox(
@@ -369,7 +369,7 @@ class _HomeState extends State<Home2> with SingleTickerProviderStateMixin {
                                         //           overflow: TextOverflow.ellipsis,
                                         //           style: TextStyle(
                                         //             fontSize: 10.0,
-                                        //             color: Color(0xff2b3993),
+                                        //             color: Color(0xff06298a),
                                         //             fontWeight: FontWeight.w800,
                                         //           )),
                                         //     ),

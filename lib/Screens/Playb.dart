@@ -37,7 +37,7 @@ class _PlaybState extends State<Playb> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff2b3993),
+        backgroundColor: const Color(0xff06298a),
         title: Text('Track'),
       ),
       body: Stack(

@@ -27,6 +27,9 @@ class NavigationDrawerWidget extends State<Nav> {
   final itemsSecond = [
     DrawerItem(title: 'Orders', icon: Icons.shopping_cart_checkout_rounded),
   ];
+  final itemsFourth = [
+    DrawerItem(title: 'Shortage', icon: FontAwesomeIcons.arrowDownShortWide),
+  ];
   final itemsThird = [
     DrawerItem(title: 'Complaint', icon: Icons.message),
   ];
@@ -65,13 +68,13 @@ class NavigationDrawerWidget extends State<Nav> {
       width: isCollapsed ? MediaQuery.of(context).size.width * 0.2 : null,
       child: Drawer(
         child: Container(
-          color: Color(0xff2b3993),
+          color: Color(0xff06298a),
           child: Column(
             children: [
               Container(
                 padding: EdgeInsets.symmetric(vertical: 14).add(safeArea),
                 width: double.infinity,
-                color: Color(0xff2b3993),
+                color: Color(0xff06298a),
                 child: buildHeader(isCollapsed),
               ),
               const SizedBox(height: 3),
@@ -93,22 +96,15 @@ class NavigationDrawerWidget extends State<Nav> {
               buildList(items: itemsThird, indexOffset: 2, isCollapsed: isCollapsed),
               const SizedBox(height: 3),
               Divider(color: Colors.white70),
-              /*buildList(
+              const SizedBox(height: 3),
+              buildList(
                 indexOffset: 1,
-                items: itemsSecond,
+                items: itemsFourth,
                 isCollapsed: isCollapsed,
               ),
               const SizedBox(height: 3),
               Divider(color: Colors.white70),
               const SizedBox(height: 3),
-              buildList(items: itemsThird, indexOffset: 2, isCollapsed: isCollapsed),
-              const SizedBox(height: 3),
-              Divider(color: Colors.white70),
-              const SizedBox(height: 3),
-              buildList(items: itemsFourth, indexOffset: 3, isCollapsed: isCollapsed),
-              const SizedBox(height: 3),
-              Divider(color: Colors.white70),
-              const SizedBox(height: 3),*/
               buildList(items: itemsFifth, indexOffset: 4, isCollapsed: isCollapsed),
               const SizedBox(height: 3),
               Spacer(),
@@ -240,7 +236,7 @@ class NavigationDrawerWidget extends State<Nav> {
   Widget buildHeader(bool isCollapsed) => isCollapsed
       ? new Icon(Icons.account_circle , color: Colors.white,)
       :  Container(
-    color: Color(0xff2b3993),
+    color: Color(0xff06298a),
     height: 150,
     padding: EdgeInsets.only(top: 10.0),
     child: Column(
@@ -259,7 +255,7 @@ class NavigationDrawerWidget extends State<Nav> {
           ),
         ),
         Text(
-          "Hascol",
+          "Puma",
           style: TextStyle(color: Colors.amber, fontSize: 20),
         ),
         Text(

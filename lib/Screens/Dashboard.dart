@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                     padding: EdgeInsets.all(8.0),
                     child:Text(title,style:TextStyle(
                       fontSize: 20.0,
-                      color: Color(0xff2b3993),
+                      color: Color(0xff06298a),
                     ),),
                   ),
 
@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(
-            backgroundColor: const Color(0xff2b3993),
+            backgroundColor: const Color(0xff06298a),
             title: Text('Dashboard'),
           ),
           /*bottomNavigationBar: BottomNavigationBar(
@@ -136,8 +136,8 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
               ],
               type: BottomNavigationBarType.shifting,
               currentIndex: _selectedIndex,
-              selectedItemColor: Color(0xff2b3993),
-              selectedIconTheme: IconThemeData(color: Color(0xff2b3993)),
+              selectedItemColor: Color(0xff06298a),
+              selectedIconTheme: IconThemeData(color: Color(0xff06298a)),
               iconSize: 20,
               onTap: _onItemTapped,
               elevation: 5
@@ -157,8 +157,8 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                 StaggeredTile.extent(6, 120.0),
                 StaggeredTile.extent(3, 120.0),
                 StaggeredTile.extent(3, 120.0),
+                StaggeredTile.extent(6, 120.0),
                 StaggeredTile.extent(6, 260.0),
-                StaggeredTile.extent(2, 120.0),
                 StaggeredTile.extent(2, 120.0),
               ],
               children: <Widget>[
@@ -181,7 +181,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text('Total Orders',
-                                     style: TextStyle(color: Color(0xff2b3993),fontSize: 16,fontWeight: FontWeight.w700)),
+                                     style: TextStyle(color: Color(0xff06298a),fontSize: 16,fontWeight: FontWeight.w700)),
                                 Text(total_orders.toString(),
                                     style: TextStyle(
                                         color: Colors.black,
@@ -190,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                               ],
                             ),
                             Material(
-                                color: Color(0xff2b3993),
+                                color: Color(0xff06298a),
                                 borderRadius: BorderRadius.circular(24.0),
                                 child: Center(
                                     child: Padding(
@@ -214,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text('Completed\n Orders',
-                                  style: TextStyle(color: Color(0xff2b3993),fontSize: 12,fontWeight: FontWeight.w700)),
+                                  style: TextStyle(color: Color(0xff06298a),fontSize: 12,fontWeight: FontWeight.w700)),
                               Text(complete_orders.toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -238,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text('InProcess\n Orders',
-                                  style: TextStyle(color: Color(0xff2b3993),fontSize: 12,fontWeight: FontWeight.w700)),
+                                  style: TextStyle(color: Color(0xff06298a),fontSize: 12,fontWeight: FontWeight.w700)),
                               Text(ontrip_orders.toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -262,7 +262,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const Text('Pending\n Orders',
-                                  style: TextStyle(color: Color(0xff2b3993),fontSize: 12,fontWeight: FontWeight.w700)),
+                                  style: TextStyle(color: Color(0xff06298a),fontSize: 12,fontWeight: FontWeight.w700)),
                               Text(pending_orders.toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -286,7 +286,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const Text('Total Complaints',
-                                   style: TextStyle(color: Color(0xff2b3993),fontSize: 16,fontWeight: FontWeight.w700)),
+                                   style: TextStyle(color: Color(0xff06298a),fontSize: 16,fontWeight: FontWeight.w700)),
                               Text(credit_card.toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -310,7 +310,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const Text('Open Complaints',
-                                   style: TextStyle(color: Color(0xff2b3993),fontSize: 14,fontWeight: FontWeight.w700)),
+                                   style: TextStyle(color: Color(0xff06298a),fontSize: 14,fontWeight: FontWeight.w700)),
                               Text(cash_orders.toString(),
                                   style: TextStyle(
                                       color: Colors.black,
@@ -335,8 +335,32 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const Text('Closed Complaints',
-                                   style: TextStyle(color: Color(0xff2b3993),fontSize: 14,fontWeight: FontWeight.w700)),
+                                   style: TextStyle(color: Color(0xff06298a),fontSize: 14,fontWeight: FontWeight.w700)),
                               Text(recieved_amount.toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 34.0))
+                            ],
+                          ),
+
+                        ]),
+                  ),
+                ),
+                _buildTile(
+                  Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const <Widget>[
+                              Text('Outstanding Payments',
+                                  style: TextStyle(color: Color(0xff06298a),fontSize: 14,fontWeight: FontWeight.w700)),
+                              Text("Rs. 4,95,300",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w700,

@@ -14,7 +14,7 @@ class SignInTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Color(0xff2b3993)
+      decoration: BoxDecoration(color: Color(0xff5982ef)
           /*image: DecorationImage(
           image: AssetImage('Assets/image2.png'),
           fit: BoxFit.cover,
@@ -56,7 +56,7 @@ class SignInTwo extends StatelessWidget {
                               Text(
                                 'Login',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w700, fontSize: 45,color: Color(0xff2b3993)),
+                                    fontWeight: FontWeight.w700, fontSize: 45,color: Color(0xff06298a)),
                               )
                             ],
                           ),
@@ -68,16 +68,16 @@ class SignInTwo extends StatelessWidget {
                                 color: Colors.black45,
                               ),
                               decoration: InputDecoration(
-                                  focusColor: Color(0xff2b3993),
+                                  focusColor: Color(0xff06298a),
                                   focusedBorder: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Color(0xff2b3993))),
+                                          BorderSide(color: Color(0xff06298a))),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                          BorderSide(color: Color(0xff2b3993))),
+                                          BorderSide(color: Color(0xff06298a))),
                                   labelText: 'Email',
                                   labelStyle: TextStyle(
-                                      fontSize: 15, color: Color(0xff2b3993))),
+                                      fontSize: 15, color: Color(0xff06298a))),
                             ),
                           ),
                           TextFormField(
@@ -87,16 +87,16 @@ class SignInTwo extends StatelessWidget {
                               color: Colors.black45,
                             ),
                             decoration: InputDecoration(
-                                focusColor: Color(0xff2b3993),
+                                focusColor: Color(0xff06298a),
                                 focusedBorder: OutlineInputBorder(
                                     borderSide:
-                                    BorderSide(color: Color(0xff2b3993))),
+                                    BorderSide(color: Color(0xff06298a))),
                                 enabledBorder: OutlineInputBorder(
                                     borderSide:
-                                    BorderSide(color: Color(0xff2b3993))),
+                                    BorderSide(color: Color(0xff06298a))),
                                 labelText: 'Password',
                                 labelStyle: TextStyle(
-                                    fontSize: 15, color: Color(0xff2b3993))),
+                                    fontSize: 15, color: Color(0xff06298a))),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 20, bottom: 5),

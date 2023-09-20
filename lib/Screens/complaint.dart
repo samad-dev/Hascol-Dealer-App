@@ -110,7 +110,7 @@ class _Comp extends State<Create_Comp> with SingleTickerProviderStateMixin {
                 Navigator.pop(context);
               },
             ),
-            backgroundColor: const Color(0xff2b3993),
+            backgroundColor: const Color(0xff06298a),
             title: const Text("Create Complaint"),
           ),
           body: Container(
@@ -144,7 +144,7 @@ class _Comp extends State<Create_Comp> with SingleTickerProviderStateMixin {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 15,
-                                      color: Color(0xff2b3993)),
+                                      color: Color(0xff06298a)),
                                 )
                               ],
                             ),
@@ -155,16 +155,16 @@ class _Comp extends State<Create_Comp> with SingleTickerProviderStateMixin {
                                 color: Colors.black45,
                               ),
                               decoration: InputDecoration(
-                                  focusColor: Color(0xff2b3993),
+                                  focusColor: Color(0xff06298a),
                                   focusedBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Color(0xff2b3993))),
+                                      BorderSide(color: Color(0xff06298a))),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Color(0xff2b3993))),
+                                      BorderSide(color: Color(0xff06298a))),
                                   labelText: 'Enter Name',
                                   labelStyle: TextStyle(
-                                      fontSize: 15, color: Color(0xff2b3993))),
+                                      fontSize: 15, color: Color(0xff06298a))),
                             ),
                             SizedBox(
                               height: 13,
@@ -177,16 +177,16 @@ class _Comp extends State<Create_Comp> with SingleTickerProviderStateMixin {
                                 color: Colors.black45,
                               ),
                               decoration: InputDecoration(
-                                  focusColor: Color(0xff2b3993),
+                                  focusColor: Color(0xff06298a),
                                   focusedBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Color(0xff2b3993))),
+                                      BorderSide(color: Color(0xff06298a))),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Color(0xff2b3993))),
+                                      BorderSide(color: Color(0xff06298a))),
                                   labelText: 'Enter Email',
                                   labelStyle: TextStyle(
-                                      fontSize: 15, color: Color(0xff2b3993))),
+                                      fontSize: 15, color: Color(0xff06298a))),
                             ),
 
                             SizedBox(
@@ -199,16 +199,16 @@ class _Comp extends State<Create_Comp> with SingleTickerProviderStateMixin {
                                 color: Colors.black45,
                               ),
                               decoration: InputDecoration(
-                                  focusColor: Color(0xff2b3993),
+                                  focusColor: Color(0xff06298a),
                                   focusedBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Color(0xff2b3993))),
+                                      BorderSide(color: Color(0xff06298a))),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Color(0xff2b3993))),
+                                      BorderSide(color: Color(0xff06298a))),
                                   labelText: 'Enter Phone',
                                   labelStyle: TextStyle(
-                                      fontSize: 15, color: Color(0xff2b3993))),
+                                      fontSize: 15, color: Color(0xff06298a))),
                             ),
                             SizedBox(
                               height: 13,
@@ -221,7 +221,7 @@ class _Comp extends State<Create_Comp> with SingleTickerProviderStateMixin {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 15,
-                                      color: Color(0xff2b3993)),
+                                      color: Color(0xff06298a)),
                                 )
                               ],
                             ),
@@ -235,16 +235,16 @@ class _Comp extends State<Create_Comp> with SingleTickerProviderStateMixin {
                                 color: Colors.black45,
                               ),
                               decoration: InputDecoration(
-                                  focusColor: Color(0xff2b3993),
+                                  focusColor: Color(0xff06298a),
                                   focusedBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Color(0xff2b3993))),
+                                      BorderSide(color: Color(0xff06298a))),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Color(0xff2b3993))),
+                                      BorderSide(color: Color(0xff06298a))),
                                   labelText: 'Enter Subject',
                                   labelStyle: TextStyle(
-                                      fontSize: 15, color: Color(0xff2b3993))),
+                                      fontSize: 15, color: Color(0xff06298a))),
                             ),
                             SizedBox(
                               height: 13,
@@ -258,16 +258,16 @@ class _Comp extends State<Create_Comp> with SingleTickerProviderStateMixin {
                                 color: Colors.black45,
                               ),
                               decoration: InputDecoration(
-                                  focusColor: Color(0xff2b3993),
+                                  focusColor: Color(0xff06298a),
                                   focusedBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Color(0xff2b3993))),
+                                      BorderSide(color: Color(0xff06298a))),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide:
-                                      BorderSide(color: Color(0xff2b3993))),
+                                      BorderSide(color: Color(0xff06298a))),
                                   labelText: 'Enter Message',
                                   labelStyle: TextStyle(
-                                      fontSize: 15, color: Color(0xff2b3993))),
+                                      fontSize: 15, color: Color(0xff06298a))),
                             ),
                             SizedBox(
                               height: 13,
